@@ -1,94 +1,87 @@
-# On Record — submission kit
+# On Record: submission kit
 
-## The one-line pitch
+## One-line pitch
 
-On Record is a bilingual family register that turns scattered records, possible unclaimed
-assets, and rights questions into one honest next step—without pretending to decide ownership.
+On Record is a family handover service that turns scattered records after a death into one clear case, one checklist, and the right official next step.
 
-## 110-second video script
+## The 115-second video script
 
-### 0:00–0:12 — Hook
+### 0:00-0:10: The problem
 
-“A family can have a bank account, insurance policy, shares, provident fund, and property—and
-still have no single record of what is actually on file. When something is missing, people are
-sent from one portal to another. On Record is a calmer starting point: what is currently on
-record, and what to do next.”
+“When a family member dies, the paperwork becomes a second crisis. A family may know there is a bank account, a property paper, or an insurance policy, but not what is recorded, what is missing, or where to begin.”
 
-### 0:12–0:25 — The promise
+### 0:10-0:20: The product
 
-Show the landing page. Say: “The name is the product rule. We never say who owns something or
-what someone will inherit. We show the record, the gap, and the next route. This is an independent
-prototype with synthetic data.”
+Show the home screen. “This is On Record, an independent prototype for Family Continuity Services. It creates one clear family case around the public services that already exist.”
 
-### 0:25–0:52 — Door I: organise
+### 0:20-0:40: Prepare
 
-Click **Start walkthrough** or Door I. Show the seeded bank record flagged **Missing nominee**,
-then the recorded insurance example. Say: “A deterministic completeness check finds what needs
-attention. It does not make a legal conclusion.” Open the nominee explainer, then the handover
-sheet. Open **Share this sheet**, show the exact fields and recipient confirmation, then confirm.
+“This demo follows Meera as she organises her father’s records. The family records a bank account, a property record, an insurance policy, the nominee currently listed, and where each document is kept.”
 
-### 0:52–1:10 — Door II: find
+Show the missing nominee flag. “The app identifies a gap. It does not decide ownership or inheritance.”
 
-Go to Door II. Enter synthetic text, start search, and let all five registry labels appear. Open
-the UDGAM result and show the document checklist plus the permanent **simulated search** panel.
-Say: “This is mocked intentionally. A production version needs authorised agreements with the
-relevant institutions.”
+### 0:40-1:00: Handover
 
-### 1:10–1:25 — Door III: route
+Open Handover. “After a death, Meera records what is known about the death certificate and any will or draft. On Record turns that into a practical first checklist and carries the same case forward.”
 
-Open Door III → property pressure. Show the `verify` marker and Maintenance Tribunal route.
-Say: “The product knows its limit: it routes a dispute to the body that handles it; it does not
-adjudicate inside the app.”
+Open the simulated search. “Possible registry matches are clearly labelled as simulated. No government system is contacted.”
 
-### 1:25–1:50 — How Codex contributed
+### 1:00-1:15: Route
 
-Show the repo and `codex/EVIDENCE-LOG.md`. Say: “Codex built the static citizen journey, then
-helped me attack it with fact, consent, tone, bilingual, judge, and freeze audits. One concrete
-change was the owner-confirmed share preview with exact fields and revocation.” Show the audit
-command names briefly.
+Open Resolve and select property pressure. “If something is contested, the app gives a neutral explanation and routes the person toward the appropriate authority, such as legal aid, Lok Adalat, a tribunal, or a court pathway.”
 
-### 1:50–2:00 — Close
+### 1:15-1:45: How it was built
 
-“The two deliberate choices are simple: owner-only sharing, and draft-never-executed. The result
-is not a new government portal. It is a trustworthy first page for a family register.”
+Show the repository and `codex/EVIDENCE-LOG.md`. “Codex helped build and harden the complete journey. I used deterministic rules, synthetic fixtures, bilingual state, consent checks, legal-tone checks, and a freeze checklist. The same case model connects Prepare, Handover, and Resolve.”
 
-## Project summary (under 250 words)
+### 1:45-1:55: Honest boundary
 
-On Record is a bilingual family register for a problem many households face: important records
-are scattered across accounts, policies, shares, provident funds and property papers, while a
-possible unclaimed asset may require several separate portals and processes. The prototype
-turns that uncertainty into one clear citizen journey: organise what is currently on record,
-search a simulated index for possible matches, and route rights questions to the appropriate
-next body.
+“This is not an official government portal, legal advice, or a document vault. It prepares the context and points people to the public service that handles the next step.”
 
-The product is deliberately honest. It never decides ownership, inheritance or eligibility. It
-labels facts that need confirmation, distinguishes a recorded nominee from an ownership decision,
-and marks every will output as a draft with no legal effect until properly executed and, where
-applicable, registered. Sharing is owner-initiated only: the person sees the exact fields before
-confirming and can revoke the mock share.
+### 1:55-2:00: Close
 
-The build is a zero-dependency static prototype created and hardened with Codex. It uses synthetic
-fixtures, deterministic rules, URL language state, and no live government integrations. Door II
-is explicitly simulated because real access would require authorised data-sharing agreements.
-The interface is mobile-first, keyboard-friendly, and available in English and Hindi.
+“The goal is simple: fewer families starting from scattered papers, guesswork, and conflict.”
+
+## Project summary, 177 words
+
+On Record is an independent family handover service for a difficult public-service problem: after a death, families often do not know what records exist, what information is missing, or which authority handles the next step.
+
+The prototype creates one clear family case around existing public services. A citizen can record synthetic bank, insurance, property, nominee, and document-location details; review missing or outdated information; create a handover checklist; inspect simulated cross-registry matches; and route a contested situation toward legal aid, Lok Adalat, a Maintenance Tribunal, or a court pathway.
+
+The product never decides ownership, inheritance, eligibility, or legal validity. It distinguishes recorded facts from simulated results, marks information that needs confirmation, and shows an explicit boundary before any official destination. Sharing is owner-initiated only and previews the exact fields before confirmation.
+
+The build uses Codex, deterministic flows, synthetic fixtures, bilingual interaction, URL state, and no live government integrations. It is designed for mobile users and people who need a clear first step rather than another complex portal.
 
 ## Judge path
 
-1. Open the public link cold on mobile.
-2. Click **Start walkthrough →**.
-3. Show the missing-nominee flag and nominee explainer.
-4. Open handover sheet → share preview → confirm.
-5. Open Door II → run mock search → UDGAM checklist.
-6. Open Door III → property pressure → Maintenance Tribunal.
+1. Open the deployed public URL on mobile.
+2. Read the Meera case card and click **Start the demo case**.
+3. Create the handover checklist.
+4. Open the simulated registry search.
+5. Return home and open **Prepare records**.
+6. Show the three synthetic records and the missing nominee signal.
+7. Open **Resolve**, choose property pressure, and show the authority route.
+8. Toggle Hindi, then English, to demonstrate state preservation.
 
-## Final freeze checklist
+## Submission facts
 
-- Public URL opens without login/access request.
-- Main path works on a fresh mobile session.
-- Every feature shown in the video works live.
-- `verify` markers are visible at point of use.
-- Share preview names exact fields and supports revocation.
-- Draft output remains explicitly draft-only.
-- Hindi toggle works on every route without state loss.
-- Video is under two minutes and summary is under 250 words.
-- Evidence log contains the real prompts and before→after changes.
+- Deadline: August 28, 2026 at 8:00 PM IST, with no grace period.
+- Required: public link, video of no more than two minutes, summary under 250 words, and partner email only if working as a team of two.
+- The first minute must show the citizen journey. The second minute must explain how the build was made and why.
+- Every feature shown in the video must work.
+
+## Recording checklist
+
+- Record at 1280x720 or 1920x1080, with browser zoom at 100 percent.
+- Use a clean private window and the deployed public URL.
+- Keep the cursor visible and pause briefly after each successful state change.
+- Do not type real names, IDs, account numbers, OTPs, or documents.
+- Show the synthetic-data boundary and simulated-search boundary on screen.
+- End with the repository evidence and live link, not a static mockup.
+
+## Research basis
+
+- [Official Builder Brief](https://buildwhatmovesindia.com/brief)
+- [Official FAQ](https://buildwhatmovesindia.com/faq)
+- [Department of Financial Services common landing portal announcement](https://www.pib.gov.in/PressReleasePage.aspx?PRID=2266714&lang=1&reg=3)
+- [National Legal Services Authority](https://nalsa.gov.in/)
