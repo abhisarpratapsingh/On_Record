@@ -8,7 +8,7 @@ On Record is a family handover service that turns scattered records after a deat
 
 ### 0:00-0:10: The problem
 
-“When a family member dies, the paperwork becomes a second crisis. A family may know there is a bank account, a property paper, or an insurance policy, but not what is recorded, what is missing, or where to begin.”
+“After a death, families should not have to become investigators. A family may know there is a bank account, a property paper, or an insurance policy, but not what is recorded, what is missing, or where to begin.”
 
 ### 0:10-0:20: The product
 
