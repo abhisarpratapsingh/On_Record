@@ -15,6 +15,11 @@
 **What Codex produced:** Added the official-source research brief, `docs/SUBMISSION-KIT.md`, a real reviewer shortcut that enters the working journey with synthetic fixtures, and `motion.css` with purpose-led route, hover, and reduced-motion animations.
 **Before → after:** The product had a complete journey but required a judge to discover it; it now offers a direct working walkthrough and a rehearsable 110-second submission path. Official brief and FAQ findings were checked against the competition site, then syntax, HTTP 200, motion hooks, and forbidden-pattern scans passed.
 
+### Pass 4 — 2026-08-27
+**Prompt given:** Shift On Record into an easy-to-understand Family Continuity platform for Indian families, organised around Prepare, Handover, and Resolve.
+**What Codex produced:** Reframed the landing page around the family problem, added the three-state information architecture, added a dedicated handover entry screen, and retained the working preparation/search/routing flows underneath.
+**Before → after:** The landing page presented three feature doors; it now presents one family continuity story with three plain-language states and a visible synthetic-data boundary.
+
 ### Pass 3 — 2026-08-27
 **Prompt given:** Run `/freeze` against the shipped build; fix any failing gate.
 **What Codex produced:** Computed WCAG contrast ratios for every color token against the `--paper` background. `--seal` measured 3.15:1 on parchment, used at normal/small text sizes in `.eyebrow`, `.register-title`, `.step`, and `.confidence.possible` — below the 4.5:1 AA floor the spec explicitly calls out in §8. Darkened `--seal` from `#A8791F` to `#7A5A16` in `styles.css`, re-verified at 5.18:1 on parchment and 6.36:1 for the white-on-seal `.btn.brass` pairing.

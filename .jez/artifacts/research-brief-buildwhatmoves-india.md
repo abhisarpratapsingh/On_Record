@@ -80,3 +80,84 @@ instead of the working product. Only use a minimal judge-mode banner/path inside
 - [Official Builder Brief](https://buildwhatmovesindia.com/brief)
 - [Official FAQ](https://buildwhatmovesindia.com/faq)
 - [OpenAI developer meetups / Codex community](https://developers.openai.com/community/meetups)
+
+## Landscape analysis: existing services
+
+### Government services already cover pieces, not the family continuity journey
+
+| Existing service | What it does | What remains outside its job |
+|---|---|---|
+| DigiLocker | Stores, issues, shares, and verifies digital documents with citizen consent; its official site describes issued documents and user-uploaded documents as separate concepts. | It is a document wallet, not a family preparation workflow, will-readiness flow, deceased-person handover, or dispute router. |
+| eCourts | Searches case status and history using CNR, case/filing number, party, advocate, FIR, act, and other fields. | It assumes a case already exists; it does not help a family prepare records or choose a safe first route before litigation. |
+| NGDRS / state registration portals | Support registration-related document search and state-specific services such as mutation, substitution, or property certificates. | Coverage, terminology, and workflows vary by state; no single family-level continuity record connects property, nominees, documents, death workflow, and dispute routing. |
+| Unclaimed-asset portals and institution portals | Point users toward specific registries and claim processes. | They solve discovery or claim initiation for a category, not the family’s cross-asset preparation and handover problem. |
+
+This is a product-positioning inference from the official service descriptions, not a claim that
+no other government initiative exists. The opportunity is the **orchestration layer** across
+already-existing services, with consent and clear boundaries.
+
+### Private products already validate demand
+
+Several Indian private products now market overlapping capabilities: asset inventories, nominee
+mapping, encrypted document storage, digital-legacy or will preparation, family briefings, and
+handover/recovery workflows. Examples include [Sort My Legacy](https://www.sortmylegacy.com/),
+[Lineage](https://lineage.money/), [Heritance](https://heritance.in/),
+[Uttaradhikari](https://www.uttaradhikari.com/about), and [eKosha](https://ekosha.co.in/).
+
+Their existence is important: the problem is not imaginary. It also means “one secure family
+vault” is not a differentiated hackathon pitch. The differentiator should be **public-service
+neutrality and dispute prevention**: explain what is recorded, what is missing, what the user can
+do next, and which public authority handles the contested step. Competitor feature and outcome
+claims above are self-published marketing claims and should not be reused as factual evidence.
+
+## Narrative recommendation
+
+Do not say: “We are building a portal for every Indian asset.” That sounds like a vague dashboard,
+an impossible integration promise, and a direct overlap with private legacy-vault products.
+
+Say:
+
+> “India has document services, land-record services, case-status services, and asset-specific
+> claim portals. The missing layer is what a family needs between them: a continuity record that
+> helps people prepare before a death, assemble the right handover after one, and reach the right
+> authority before confusion becomes a dispute.”
+
+For the user, the first screen should ask one emotionally legible question:
+
+> **If something happened in your family tomorrow, would the right person know what exists and
+> what to do first?**
+
+The answer is not a legal verdict. It is a Family Continuity Packet with three states:
+
+1. **Prepare** — record people, property, money, nominees, documents, and declared wishes.
+2. **Handover** — after a death, turn the record into a document-and-institution checklist.
+3. **Resolve** — if something is contested, produce a neutral evidence summary and route to the
+   appropriate authority.
+
+## Judge articulation
+
+The 20-second explanation:
+
+> “We are not replacing DigiLocker, land records, or eCourts. We are building the missing family
+> continuity layer between them. On Record helps a family prepare a record before a crisis, use
+> it to organise the handover after a death, and reach the right authority when the record is
+> contested. The prototype uses synthetic data and makes every limitation visible.”
+
+The proof sequence:
+
+1. Start with a missing nominee/document, not a dashboard.
+2. Show the system produce a concrete next step.
+3. Switch to the after-death handover state and show the checklist.
+4. Introduce a property dispute and route it; do not pretend to resolve it in-app.
+5. Explain how a future government version could use consent-based verified documents, state land
+   services, and eCourts links without centralising more data than necessary.
+
+## Claims discipline
+
+- The “66.2%” land/property statistic is from a 2015–16 access-to-justice survey and must be
+  labelled as such, not presented as a current universal statistic.
+- Do not use “8 out of 10 Indians think they are in a will” until a reliable source and exact
+  wording are confirmed.
+- Do not say On Record will reduce disputes as a measured fact. Say it is designed to reduce
+  preventable confusion and improve routing; treat impact as a hypothesis until tested.
+- Do not imply government adoption. The official FAQ says there is no promise of adoption.
