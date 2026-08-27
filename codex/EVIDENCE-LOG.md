@@ -30,6 +30,11 @@
 **What Codex produced:** Removed legacy-renderer interference from interaction handlers, stopped input re-renders from destroying focus, added synthetic record reference/document-location/note fields, added a handover intake and checklist state, and added functional form styling.
 **Before → after:** Typing into a record could trigger a full-screen render and lose the user’s input focus; fields now persist on input without structural re-rendering, while the new handover route accepts a person and document status before generating next steps.
 
+### Pass 7 — 2026-08-27
+**Prompt given:** Ensure recorded bank and other asset details flow through the review and handover outputs instead of disappearing after entry.
+**What Codex produced:** Added downstream reference/location visibility, expanded the handover share field list, and added a record metadata treatment for quick verification.
+**Before → after:** Prepare captured extra details but the check/sheet views hid them; the same details now appear in review, handover, and share preview.
+
 ### Pass 3 — 2026-08-27
 **Prompt given:** Run `/freeze` against the shipped build; fix any failing gate.
 **What Codex produced:** Computed WCAG contrast ratios for every color token against the `--paper` background. `--seal` measured 3.15:1 on parchment, used at normal/small text sizes in `.eyebrow`, `.register-title`, `.step`, and `.confidence.possible` — below the 4.5:1 AA floor the spec explicitly calls out in §8. Darkened `--seal` from `#A8791F` to `#7A5A16` in `styles.css`, re-verified at 5.18:1 on parchment and 6.36:1 for the white-on-seal `.btn.brass` pairing.
