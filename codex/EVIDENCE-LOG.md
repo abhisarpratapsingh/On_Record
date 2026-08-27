@@ -35,6 +35,11 @@
 **What Codex produced:** Added downstream reference/location visibility, expanded the handover share field list, and added a record metadata treatment for quick verification.
 **Before → after:** Prepare captured extra details but the check/sheet views hid them; the same details now appear in review, handover, and share preview.
 
+### Pass 8 — 2026-08-27
+**Prompt given:** Rebuild the product as a practical government-style service platform, not a DigiLocker-like document vault, with an interconnected architecture and quieter service narrative.
+**What Codex produced:** Added the shared Family Continuity workspace model, service rail, case summary, service workbench cards, connected service routes, and a restrained government-platform visual layer.
+**Before → after:** The landing page behaved like a branded register/document; it now presents a task-led service home where Prepare, Handover, and Resolve are connected views of one family continuity case.
+
 ### Pass 3 — 2026-08-27
 **Prompt given:** Run `/freeze` against the shipped build; fix any failing gate.
 **What Codex produced:** Computed WCAG contrast ratios for every color token against the `--paper` background. `--seal` measured 3.15:1 on parchment, used at normal/small text sizes in `.eyebrow`, `.register-title`, `.step`, and `.confidence.possible` — below the 4.5:1 AA floor the spec explicitly calls out in §8. Darkened `--seal` from `#A8791F` to `#7A5A16` in `styles.css`, re-verified at 5.18:1 on parchment and 6.36:1 for the white-on-seal `.btn.brass` pairing.
