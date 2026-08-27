@@ -25,6 +25,11 @@
 **What Codex produced:** Diagnosed the duplicate legacy router, added an explicit canonical `renderApp()` router, and added the civic-service visual redesign with responsive Prepare/Handover/Resolve cards.
 **Before → after:** The old `home()` renderer could override the new `newHome()` renderer; the current route now deterministically renders the Family Continuity landing page and dedicated `/handover` route.
 
+### Pass 6 — 2026-08-27
+**Prompt given:** Make all three functions actually useful: record bank and other details, improve handover and resolve, fix button behavior, and make the front page feel like a platform rather than a document.
+**What Codex produced:** Removed legacy-renderer interference from interaction handlers, stopped input re-renders from destroying focus, added synthetic record reference/document-location/note fields, added a handover intake and checklist state, and added functional form styling.
+**Before → after:** Typing into a record could trigger a full-screen render and lose the user’s input focus; fields now persist on input without structural re-rendering, while the new handover route accepts a person and document status before generating next steps.
+
 ### Pass 3 — 2026-08-27
 **Prompt given:** Run `/freeze` against the shipped build; fix any failing gate.
 **What Codex produced:** Computed WCAG contrast ratios for every color token against the `--paper` background. `--seal` measured 3.15:1 on parchment, used at normal/small text sizes in `.eyebrow`, `.register-title`, `.step`, and `.confidence.possible` — below the 4.5:1 AA floor the spec explicitly calls out in §8. Darkened `--seal` from `#A8791F` to `#7A5A16` in `styles.css`, re-verified at 5.18:1 on parchment and 6.36:1 for the white-on-seal `.btn.brass` pairing.
