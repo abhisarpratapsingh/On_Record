@@ -67,3 +67,9 @@
 **What Codex produced:** Added a local display stack using Palatino Linotype with Book Antiqua and Georgia fallbacks, a neutral Segoe UI Variable service stack, Cascadia Mono for metadata, tighter display tracking, balanced headline wrapping, and a responsive type scale. No external font request was introduced.
 **Before -> after:** The hero relied on a default Georgia-like stack with oversized, cramped wrapping; it now separates emotional display type from service UI type, preserves hierarchy, and remains legible in English and Hindi.
 **Verification:** Live screenshot reviewed after cache-busted reload. Computed display font was the intended local stack, headline and body metrics were measured, English and Hindi hero text rendered, Hindi had no horizontal overflow, and the hero CTA still opened Handover. `node --check app.js` passed.
+
+### Pass 13 - 2026-08-27
+**Prompt given:** Replace the childish blue hero box with a mature, practical government-service presentation and improve the hero structure and typography.
+**What Codex produced:** Replaced the saturated blue panel with a white case-opening surface, a restrained navy institutional rule, a serious sans-serif headline hierarchy, mono metadata for service labels, and a navy dossier header for the synthetic case record. Preserved the Facts -> Action -> Authority structure and responsive stacking.
+**Before -> after:** The hero read as a promotional blue card; it now reads as the opening surface of a calm public-service case workspace, with the problem, next action, and case context visible together.
+**Verification:** `node --check app.js`, `git diff --check`, and live HTTP checks for `app.js` and `platform.css` passed. The cache-busted live screenshot was reviewed at the actual mobile-width viewport. The hero has no horizontal overflow, the headline uses the mature service stack at weight 800, and the hero surface is white with the navy accent rather than the previous blue box.
