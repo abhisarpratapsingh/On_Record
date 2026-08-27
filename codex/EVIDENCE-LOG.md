@@ -20,6 +20,11 @@
 **What Codex produced:** Reframed the landing page around the family problem, added the three-state information architecture, added a dedicated handover entry screen, and retained the working preparation/search/routing flows underneath.
 **Before → after:** The landing page presented three feature doors; it now presents one family continuity story with three plain-language states and a visible synthetic-data boundary.
 
+### Pass 5 — 2026-08-27
+**Prompt given:** Fix the old page rendering and change the design so the new Family Continuity narrative is unmistakable.
+**What Codex produced:** Diagnosed the duplicate legacy router, added an explicit canonical `renderApp()` router, and added the civic-service visual redesign with responsive Prepare/Handover/Resolve cards.
+**Before → after:** The old `home()` renderer could override the new `newHome()` renderer; the current route now deterministically renders the Family Continuity landing page and dedicated `/handover` route.
+
 ### Pass 3 — 2026-08-27
 **Prompt given:** Run `/freeze` against the shipped build; fix any failing gate.
 **What Codex produced:** Computed WCAG contrast ratios for every color token against the `--paper` background. `--seal` measured 3.15:1 on parchment, used at normal/small text sizes in `.eyebrow`, `.register-title`, `.step`, and `.confidence.possible` — below the 4.5:1 AA floor the spec explicitly calls out in §8. Darkened `--seal` from `#A8791F` to `#7A5A16` in `styles.css`, re-verified at 5.18:1 on parchment and 6.36:1 for the white-on-seal `.btn.brass` pairing.
