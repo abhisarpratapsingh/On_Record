@@ -116,3 +116,8 @@
 **Prompt given:** Verify that reduced visibility is not applied immediately and that the cooling-off interaction is visible, reversible, and audited.
 **What Codex produced:** Added an explicit visibility state machine to the People view. Upgrades apply immediately and are logged; downgrades create a pending request with the old tier retained, a simulated seven-day cooling-off label, and explicit Cancel / Apply after 7 days controls. Applying or cancelling the request creates its own member-scoped Consent Log event.
 **Verification:** Switched to Arjun Sharma, changed the seeded Life cover policy from Full detail to Existence-only, confirmed the live view still showed Full detail while the pending review showed `Full detail → Existence-only`, then confirmed both actions were available and the request appeared in the Consent Log. The production build still passed after the change.
+
+### Pass 21 - 2026-09-06
+**Prompt given:** Keep the evidence story impactful without omitting the court-load context.
+**What Codex produced:** Removed the evidence-row limit so the visible evidence section now includes the NJDG pending-case snapshot alongside the survey, land-conflict, NITI Aayog, and RBI context, with each row retaining its source link and limitation note.
+**Verification:** Fresh browser reload showed the ≈5.1 crore NJDG row, and the page retained zero horizontal overflow. `npm run build` and `git diff --check` passed.
