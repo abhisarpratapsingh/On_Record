@@ -1,0 +1,11 @@
+# Only the Vite source is needed; Vercel installs and builds.
+node_modules
+dist
+.git
+output
+scripts
+docs
+codex
+tmp
+.jez
+.claude
