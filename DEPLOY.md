@@ -1,22 +1,19 @@
 # Deploying On Record
 
-This is a zero-dependency static site. No build step, no `package.json`, no
-framework. Deploy the repository root as-is. Routing is entirely
-hash-based (`#/door1/add`, `#/handover`, ...), so no server-side rewrite
-rules, `vercel.json`, or `_redirects` file are needed on any host.
+On Record is a Vite static build. The submission uses seeded synthetic data and
+does not require Supabase, authentication, environment variables, or live
+government integrations.
 
-Files that must ship together (everything the deployed site actually loads):
+Build it with:
 
+```bash
+npm install
+npm run build
 ```
-index.html
-app.js
-data/fixtures.js
-styles.css
-motion.css
-functional.css
-platform.css
-hero-redesign.css
-```
+
+Deploy the generated `dist/` directory. Vite uses relative asset paths, so the
+build works on a project subpath such as GitHub Pages. Hash routes keep direct
+navigation simple (`#/demo`, `#/records`, `#/family`, `#/handover`).
 
 The other repo files (`CLAUDE.md`, `ON-RECORD-BUILD-PROMPT.md`, `docs/`,
 `codex/`, `.claude/`, `.jez/`) are project documentation and dev tooling.
@@ -24,17 +21,17 @@ They are harmless to include but not required by the live page.
 
 ## Vercel (dashboard, no CLI)
 
-1. Go to vercel.com, "Add New" then "Project".
-2. Import this folder, or drag-and-drop it if given that option.
-3. Framework preset: **Other**. Leave build command and output directory
-   blank, root directory as `.`.
-4. Deploy. No environment variables needed.
+1. Go to vercel.com, “Add New” then “Project”.
+2. Import this repository.
+3. Framework preset: **Vite**.
+4. Build command: `npm run build`.
+5. Output directory: `dist`.
+6. Deploy. No environment variables are needed.
 
 ## Vercel (CLI)
 
 ```bash
-npm i -g vercel
-vercel --prod
+npx vercel --prod
 ```
 
 Accept the defaults; it auto-detects a static project.
@@ -42,24 +39,23 @@ Accept the defaults; it auto-detects a static project.
 ## Netlify (drag and drop)
 
 1. Go to app.netlify.com/drop.
-2. Drag the project folder in directly. No build settings needed.
+2. Run `npm install` and `npm run build` locally.
+3. Drag the generated `dist/` directory into Netlify Drop.
 
 ## GitHub Pages
 
 1. Push this repo to GitHub.
-2. Settings, Pages, Deploy from a branch, pick `main` and `/ (root)`.
-3. Wait for the Pages build to finish; the URL appears in the same settings
-   panel.
+2. Add a Pages workflow that runs `npm ci` and `npm run build`.
+3. Publish the `dist/` artifact with GitHub Pages.
 
 ## After deploying
 
 Confirm on the live URL before recording the submission video:
 
 - Home loads with no console errors.
-- `#/handover` works as a direct deep link (paste the URL with that hash
-  and hard-refresh) — this previously crashed before the Pass 15 fix in
-  `codex/EVIDENCE-LOG.md`, so it is the one regression worth a manual check.
-- `?lang=hi` toggles and round-trips through at least one door.
+- `#/demo`, `#/records`, `#/family`, and `#/handover` work as direct hash routes.
+- A synthetic recipient route such as `#/preview/demo-ananya-7f2` is read-only.
+- The guided demo and play-all demo both reach the handover release and reset.
 - No horizontal scroll on a phone-width viewport.
 
 Then put that URL in `docs/SUBMISSION-KIT.md`'s judge path and in the

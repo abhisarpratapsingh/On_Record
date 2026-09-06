@@ -1,93 +1,63 @@
-# On Record: submission kit
+# On Record: Phase 2 submission kit
 
 ## One-line pitch
 
-84.8 percent of Indian families have no will, and the government's own May 2026 fix for unclaimed money is just a page of five separate logins. On Record is the independent prototype of what a real, unified version looks like: one family case that prepares, hands over, and routes, without ever deciding who owns what.
+On Record helps a living owner record family assets and wishes privately, choose exactly what each person can see, and prepare a read-only handover before a dispute begins.
 
-## Video
+## Product position
 
-Live link: https://drive.google.com/file/d/14FJakb7odbgSuYYmYcsFCNz0bpykGi7m/view?usp=sharing
-(112.6 seconds, matches `on-record-demo-SYNCED.mp4`, real narration audio, under the 120-second cap)
+This is a family continuity and consent layer, not a will-maker, legal decision-maker, government replacement, or ownership registry. It records what the owner says exists, preserves the history of changes, and points future users toward the institution or authority that must handle the official process.
 
-## The video script
+## Two-minute screen recording
 
-Structure follows the brief's own instruction verbatim: minute one demos
-the project as a citizen, minute two explains how it was built and why.
-Narrated with the creator's own voice throughout, matched line-by-line to
-on-screen captions.
+### 0:00–0:30 — The problem
 
-### 0:00-0:44, PART 1: live walkthrough, as a citizen
+Open the homepage. Show the evidence cards and say: families often discover scattered records, unclear nominee status, and conflicting memories only after a death or property disagreement. The figures shown are sourced context, with their limitations visible.
 
-Opens cold on the live homepage, no branding preamble. Scrolls through the
-hero, the "why On Record is different" panel, and the official destination
-cards, then walks Prepare (adding records, the missing-nominee flag),
-Handover (intake, checklist, simulated search), and Resolve (the
-property-pressure routing path). Full line-by-line narration lives in
-`TTS-SCRIPT.md` and `NARRATION-SCRIPT.md`.
+### 0:30–1:15 — The working journey
 
-### 0:44-1:44, PART 2: how it was built, and why
+Open **See how it works** and use **Play all**. The continuous demo shows private records, a family member seeing only existence, full detail for a selected record, a concern, a seven-day cooling-off period, a handover bundle, and a simulated read-only release. Use **Replay** or **Reset** at the end.
 
-An animated sequence, no website visible: the 84.8 percent stat, the
-₹1-2 lakh crore unclaimed figure, the five-portal fragmentation problem,
-On Record as the unified answer, the three pillars (Prepare / Handover /
-Resolve), the two safety decisions (owner-initiated sharing, nothing ever
-signed), and Built with Codex, 17 real logged build passes, zero AI calls
-in the shipped product.
+### 1:15–2:00 — The differentiator
 
-### 1:44-1:52, close
+Pause the demo and open **My records**, **Family access**, and **Handover**. Add or expand a synthetic record, choose visibility before saving, change the nominee status, switch to Ananya or Arjun, open the synthetic recipient link, raise a concern, then select a different handover recipient. Point out that the owner sees the Consent Log, recipients do not get account access, and nothing is released in Living Mode.
 
-"On Record. One family case, instead of five logins and a guess."
+## Project summary
 
-## Project summary, under 250 words (248 words)
+On Record is a private-first family continuity workspace for the moment before a family dispute and the handover after it. An owner records what exists across money, property, documents, and wishes; records start private; and every save, visibility change, nominee update, concern, handover selection, and release simulation leaves a Consent Log entry. Family members receive only the access the owner explicitly chooses: nothing, existence-only, or full detail. A visibility downgrade enters a simulated seven-day cooling-off period. A future nominee or handover recipient gets a separate read-only view, never the owner’s account.
 
-On Record fixes a public-service gap that is already a slow-motion emergency: 84.8 percent of Indian families have no will, nearly a third have already lived through an inheritance dispute, and one to two lakh crore rupees sit unclaimed in banks, insurance, shares, and provident funds because nobody kept a record. In May 2026 the government shipped its own fix, a Common Landing Portal. It searches nothing. It just redirects citizens to five separate logins and leaves them to figure out the rest alone.
-
-On Record is what the unified front door should have been. One family case lets you prepare records before a crisis, turn scattered documents into a handover checklist after a death, and route a dispute to the right authority, without ever deciding who owns what. Every legal claim carries a source and a confidence marker. Every draft will says, visibly, that it has no legal effect until properly executed. Every share is owner-initiated and named field by field before it happens.
-
-Built entirely with Codex across 17 real, logged build passes, from the first working prototype through a full consent-integrity audit that closed cross-profile leaks a share panel could have exposed, the shipped product makes zero AI calls. Every rule is deterministic, auditable, and reproducible, in both English and Hindi, with no login and no cold start.
-
-This is not a mockup of a good idea. It is a working front door for the paperwork nobody wants to think about until it's too late.
+The product does not make a will, decide ownership, or promise that a nominee is the final beneficiary. It records the current nomination status and explains that institution rules, valid instruments, and succession law still govern entitlement. It uses synthetic data, no login, no live government APIs, and no AI calls, so the journey is immediately reviewable from a static deployment. The architecture leaves a repository boundary for a later authenticated backend and authorised institution integrations.
 
 ## Judge path
 
-1. Open the deployed public URL. Read the 84.8 percent headline and the "Why On Record is different" panel beside it, both visible without scrolling.
-2. Click **Start the demo case**.
-3. Fill the short intake and create the handover checklist.
-4. Open the simulated registry search and note the "no live data" boundary.
-5. Return home, scroll to the official destination cards, and to "What is real, what is mocked, and how this could scale."
-6. Open **Prepare**, review the three synthetic records and the missing nominee flag.
-7. Open **Resolve**, choose the property-pressure path, and see the authority routing.
-8. Toggle Hindi, then English, on any screen to confirm state survives the switch.
-
-## Submission facts
-
-Quoted from the official "What to submit" instructions:
-
-- Deadline: August 28, 2026 at 8:00 PM IST. No grace period after the form closes.
-- A live public link that opens in a browser without requesting access. Reviewers will not download a mobile app. Include mock consumer login credentials if the project requires them.
-  - On Record has no login anywhere in the product (CLAUDE.md forbids it on the critical path), so this line does not apply; the deployed URL opens straight to the working app.
-- One video, no longer than two minutes. First minute demos the project as a citizen; second minute explains how it was built and why those choices were made. Both teammates may present.
-- A project summary under 250 words explaining what it is and why it is better than the current solution.
-- Partner's registered email if a team of two; leave blank if solo. Both teammates must register and submit each other's registered email.
-- Every link must work without requesting access.
-
-Pre-submit check: open the live URL and the video link in a private/incognito
-window (logged out of any account) to confirm neither prompts for access.
-- Judging axes, in order: problem, working build, usability, product thinking, end-to-end thinking, honesty.
+1. Open `/` and notice the private-first promise, seeded family case, and sourced evidence.
+2. Open **See how it works**, click **Play all**, and let the 10-step story reach simulated release.
+3. Click **Reset**, then inspect **My records** and expand the bank account to see the missing-nominee state.
+4. Open **Family access**, switch between the three synthetic family members, and change one visibility tier.
+5. Open the recipient link. Confirm existence-only records reveal no sensitive detail and that a recipient can raise a concern without editing.
+6. Open **Handover**, change the recipient, adjust the read-only bundle, simulate release, then reset.
+7. Toggle Hindi and return to English. Use the source cards to inspect the research basis.
 
 ## Recording checklist
 
-- Record at 1280x720 or 1920x1080, browser zoom at 100 percent.
-- Use a clean private window and the deployed public URL, not localhost.
-- Keep the cursor visible and pause briefly after each state change.
-- Do not type real names, IDs, account numbers, OTPs, or documents.
-- Show the synthetic-data boundary and the simulated-search boundary on screen, not just in narration.
-- End on the repository evidence log and the live link, not a static mockup.
+- Use a clean browser at 100% zoom and record 1280×720 or 1920×1080.
+- Use only the seeded synthetic family. Do not enter real names, IDs, account numbers, OTPs, or documents.
+- Keep the cursor visible and pause after each important state change.
+- Show **Reset demo** near the end so the simulation is visibly reversible.
+- If deploying to GitHub Pages, publish the `dist/` folder and use the hash routes described in `DEPLOY.md`.
 
-## Research basis
+## Evidence basis
 
-- Official Builder Brief, buildwhatmovesindia.com/brief.
-- Official FAQ, buildwhatmovesindia.com/faq.
-- Department of Financial Services Common Landing Portal announcement, cited in `ON-RECORD-BUILD-PROMPT.md` section 5.3.
-- National Legal Services Authority, nalsa.gov.in.
-- 1 Finance survey on the no-will and dispute figures, cited by BusinessToday and Outlook Money, June 2026.
+- [Build What Moves India brief](https://buildwhatmovesindia.com/brief) and [FAQ](https://buildwhatmovesindia.com/faq): submission and judging context.
+- [Reserve Bank of India deceased-depositor guidance](https://www.rbi.org.in/Scripts/NotificationUser.aspx?Id=9862): nominee payment may be made as trustee for legal heirs, and eligible claims should be settled within 15 days after required proof and identification.
+- [RBI public nominee explainer](https://rbikehtahai.rbi.org.in/nomination-and-settlement-sms.html): nominee and succession framing.
+- [EPFO claim forms](https://www.epfindia.gov.in/site_en/WhichClaimForm.php/index.php) and [SEBI transmission FAQ](https://www.sebi.gov.in/sebi_data/faqfiles/jan-2026/1767611333081.pdf): institution-specific process boundaries.
+- [CPR land-conflict research](https://cprindia.org/understanding-land-conflict-in-india-and-suggestions/) and [NITI Aayog](https://www.niti.gov.in/node/296): land-dispute context and limitations.
+- [NJDG](https://njdg.ecourts.gov.in/njdg_v3/?p=home%2Findex): live pending-case context; figures change over time.
+- [1 Finance survey reporting](https://www.business-standard.com/amp/finance/personal-finance/india-biggest-wealth-planning-problem-nearly-85-dont-have-a-will-126060300578_1.html): survey findings on planning and inheritance disputes, not universal population counts.
+
+## What is real and what is mocked
+
+Real: the frontend journey, bilingual core UI, visibility state machine, recipient perspectives, audit events, cooling-off interaction, handover preview, resettable simulation, and source links.
+
+Mocked: identity, authentication, invitation delivery, death trigger, institution APIs, document verification, legal entitlement, and any external release. The shipped build is deliberately safe for a public demo and keeps the future integration point explicit.

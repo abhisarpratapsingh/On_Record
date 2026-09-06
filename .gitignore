@@ -1,2 +1,4 @@
 .claude/scheduled_tasks.lock
 .jez/
+node_modules/
+dist/
