@@ -9,16 +9,20 @@ Outputs (output/video/):
 import json
 import pathlib
 import subprocess
+import sys
 
 HERE = pathlib.Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
-BUILD = HERE / "build"
+_flags = [a for a in sys.argv[1:] if a.startswith("--lang=")]
+LANG = _flags[0].split("=")[1] if _flags else "en"
+BUILD = HERE / ("build" if LANG == "en" else f"build-{LANG}")
 OUT = ROOT / "output" / "video"
 OUT.mkdir(parents=True, exist_ok=True)
 
 timings = json.loads((BUILD / "timings.json").read_text(encoding="utf-8"))
 fps = timings["fps"]
-mp4 = OUT / "on-record-phase-2.mp4"
+stem = "on-record-phase-2" + ("" if LANG == "en" else f"-{LANG}")
+mp4 = OUT / f"{stem}.mp4"
 
 
 def run(cmd):
@@ -53,11 +57,11 @@ for i, seg in enumerate(segments, start=1):
     nxt = segments[i]["start"] - 0.04 if i < len(segments) else timings["total"]
     end = min(seg["end"] + 0.25, nxt)
     lines += [str(i), f"{srt_time(seg['start'])} --> {srt_time(end)}", seg["caption"], ""]
-(OUT / "on-record-phase-2.srt").write_text("\n".join(lines), encoding="utf-8")
+(OUT / f"{stem}.srt").write_text("\n".join(lines), encoding="utf-8")
 
 # ── poster ───────────────────────────────────────────────────────────────────
 run(["ffmpeg", "-y", "-v", "error", "-ss", "75", "-i", str(mp4),
-     "-frames:v", "1", "-q:v", "2", str(OUT / "poster.jpg")])
+     "-frames:v", "1", "-q:v", "2", str(OUT / f"poster{'' if LANG == 'en' else '-' + LANG}.jpg")])
 
 probe = subprocess.run(
     ["ffprobe", "-v", "error", "-show_entries",
