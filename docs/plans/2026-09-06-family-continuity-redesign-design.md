@@ -1,178 +1,159 @@
-# On Record — Family Continuity Redesign
+# On Record — Connected Case Flow Design
 
 **Date:** 2026-09-06  
-**Status:** Approved design direction  
-**Scope:** Phase 2 submission redesign
+**Status:** Approved for implementation
+**Scope:** Phase 2 frontend and screen-recordable product demo
 
 ## Product intent
 
-On Record is a privacy-first family continuity record for a living owner. It helps a person record financial assets, property, important documents, nominee details, contacts, and wishes; decide what each person may see; preserve a trace of every consent decision; and prepare a scoped, read-only handover for a future situation.
+On Record is a private-first family continuity record for a living owner. It helps a person record what exists across money, property, documents, and wishes; make deliberate visibility decisions; preserve a trace of every material change; and prepare a scoped, read-only handover for a later authorised situation.
 
-The product reduces avoidable uncertainty and administrative friction. It does not decide inheritance, validate title, make a will, guarantee settlement, or replace a court, institution, lawyer, or government service.
+It does not make a will, decide ownership, validate title, guarantee settlement, verify death, or replace a court, institution, lawyer, or government service.
 
-## Evidence model
+## Core design decision
 
-The product may use carefully attributed contextual evidence:
+The product and the demo are one connected case flow. There is no separate animated explainer and no dashboard-first landing screen. A single synthetic case remains visible while each completed action activates the next action box:
 
-- 84.8% of respondents in a 2026 1 Finance survey reported having no will; 62.5% reported no plans to make one; 30.5% reported an inheritance dispute. These are survey findings, not population-wide administrative counts.
-- The RBI Household Finance Committee finding that about 84% of average household wealth was held in real estate and other physical assets is a wealth-composition statistic, not a property-dispute statistic.
-- The Daksh litigant survey found 66.2% of surveyed civil matters were land/property-related. This must not be presented as a census of every civil case.
-- CPR reports approximately 20 years for a land-acquisition dispute from origin to Supreme Court resolution. This must not be presented as the average duration of every family property dispute.
-- NJDG figures are live and changing; the interface must show the retrieval date and link to NJDG rather than hard-code an unqualified permanent number.
-- RBI guidance says eligible deceased-depositor claims should be settled within 15 days after required proof of death and satisfactory identification. The product must include that qualification.
+```text
+[01 Record privately] → [02 Choose visibility] → [03 See the member view]
+                                      ↓
+                         [04 Fork a handover bundle] → [05 Read-only release]
+```
 
-No claim may say that 84% of family wealth is disputed property, that every property dispute takes 15–20 years, or that On Record itself reduces court cases. The defensible causal claim is that better records, deliberate consent, and clearer handover context can reduce avoidable ambiguity and repeated administrative work.
+Each box shows four things: what the owner is doing, the exact record or person involved, the immediate result, and the next available action. Completed boxes remain visible as proof. Future boxes are present but muted. The Consent Log is a persistent activity rail that records the state transition without becoming a second dashboard.
 
-## Domain architecture
+The flow is inspired by the reference site's section discipline and data-driven live previews, not by its brand assets or palette. The supplied workflow image is used only as a spatial reference for connected boxes.
 
-### Roles
+## Narrative surfaces
 
-- **Owner:** controls the case while alive, records facts, sets visibility, manages members, prepares handover, and sees the complete audit log.
-- **Family member:** receives deliberately shared records, acknowledges them, requests access, and raises concerns. They never receive access merely by invitation.
-- **Institution nominee:** the nominee currently recorded with an institution for a specific asset. This is an asset field, not an automatic On Record account role.
-- **Handover recipient:** an app-level, read-only release contact who may receive a selected handover bundle later. This can be the institution nominee but does not have to be.
-- **Future verifier:** a production-scale role for verified death or legal-authority triggers. The submission simulates this trigger and never claims to verify death.
+### Entry narrative
 
-### Record types
+The page opens with one problem statement, one sentence explaining the service, and one primary action to start the case. A quiet evidence strip supports credibility below the start action, without competing with the journey.
 
-Records are grouped into four user-facing categories:
+### Connected case rail
 
-- **Money:** bank, insurance, shares/demat, mutual fund, provident fund.
-- **Property:** land, home, tenancy, title or mutation-related documents.
-- **Documents:** identity/supporting documents, certificates, folios, policies, and locations.
-- **Wishes:** factual owner-authored notes about important contacts, care preferences, document locations, and what to find first. This is not a will and does not allocate property.
+The main experience is a full-width, responsive rail of five action cards. Desktop uses a horizontal sequence with connector lines. Mobile uses a vertical sequence or a horizontal snap rail when the viewport is narrow. Each card has a stable number, short title, status, one focal object, and one primary action.
 
-### Per-record signals
+### Perspective surface
 
-The app keeps independent signals so no single badge becomes a legal verdict:
+The family-view step uses a person switcher for Ananya, Arjun, and Rhea. Selecting a person updates the same preview surface to show exactly what that person can see. It does not navigate away or expose the owner's full record list.
 
-- **Record:** Recorded / Incomplete.
-- **Nominee:** Current / Missing / Needs review / Minor nominee / Not applicable.
-- **Concern:** No concern / Concern raised.
-- **Visibility:** Private / Existence-only / Full detail.
-- **Handover:** Not selected / Selected / Needs review.
+### Handover fork
 
-For many financial assets, the product explains that a nominee helps an institution release or transfer an asset after death, while final entitlement may depend on a valid will and applicable succession law. The app records what is listed and does not decide ownership. Asset-specific procedures remain institution-dependent.
+The handover step visibly branches from Living Mode. It allows the owner to select records and a recipient, then creates a read-only projection. The branch is labelled as a preview and never mutates live visibility.
 
-## Consent and privacy architecture
+### Activity rail
 
-### Defaults
+The Consent Log is always scoped to the active case. Owner view sees all events. A recipient view sees only events concerning that recipient. The activity rail updates immediately after each action and uses neutral language for concerns and pending changes.
 
-- Every record is private by default.
-- The owner must select visibility before saving or sharing a record.
-- An invitation reveals no records.
-- An accepted invitation opens an empty family workspace.
-- Existence-only is available only after the owner explicitly includes a record in a reviewed share set.
-- Full detail is an additional explicit grant.
+## Action-card state machine
 
-### Audit log
+The domain state has one source of truth:
 
-The log is append-only in the domain model. Events include record creation, edits, nominee updates, invitations, grants, upgrades, downgrade requests, cooling-off state changes, acknowledgements, requests, concerns, handover selection, release preview, and resettable demo events.
+- `case`: owner, synthetic case id, language, and current mode.
+- `records`: factual records with category, location, completeness, nominee status, and private-by-default visibility.
+- `members`: three synthetic family members with separate non-sensitive preview tokens.
+- `grants`: per-member record visibility of `none`, `existence`, or `full`.
+- `concerns`: private member note plus neutral owner/member status.
+- `coolingOff`: pending seven-day visibility downgrades with cancel/apply controls.
+- `handover`: recipient, selected record ids, preview status, and simulated release status.
+- `events`: append-only Consent Log entries.
 
-The owner sees the full log. A family member sees only events involving that member. Private records never leak through event labels, counts, or timestamps.
+The five cards expose deterministic commands:
 
-### Downgrade safety
+1. `createRecord(record)` creates an owner-private record and logs creation.
+2. `setVisibility(member, record, tier)` records an explicit access decision.
+3. `openPerspective(member)` changes only the viewing lens.
+4. `raiseConcern(member, record)` stores the private explanation and neutral flag.
+5. `requestDowngrade`, `cancelDowngrade`, and `applyDowngrade` manage the simulated cooling-off state.
+6. `selectHandoverRecord(record)` and `setHandoverRecipient(member)` update the separate handover projection and log both changes.
+7. `simulateRelease()` opens read-only handover mode; `resetDemo()` returns to seeded Living Mode.
 
-A visibility downgrade enters a simulated seven-day cooling-off state:
+The guided demo invokes these same commands. A demo step must never display a visual state that the real controls cannot produce.
 
-1. The owner sees the exact access being removed.
-2. The owner confirms the downgrade.
-3. The pending change is logged immediately.
-4. The affected member receives only a neutral pending-change notice.
-5. The owner may cancel during the simulated period.
-6. The owner may apply the change after the simulated period.
+## Record and nominee model
 
-This is a product safety mechanism, not a claim of legal protection.
+Records use four user-facing categories: Money, Property, Documents, and Wishes. Each record independently displays:
 
-## Handover architecture
+- Recorded or incomplete
+- Nominee current, missing, needs review, minor nominee, or not applicable
+- Private, existence-only, or full-detail visibility
+- Selected or not selected for handover
+- Concern raised or no concern
 
-Living Mode remains the source of truth. Handover is a separate read-only projection.
+The interface states that for many financial assets a nominee helps an institution release or transfer an asset after death, while final entitlement may depend on a valid instrument and applicable succession law. On Record records what is listed and does not decide ownership.
 
-- **Preview handover:** assembles a selected bundle without changing live visibility.
-- **Simulate release:** opens a reversible simulated Handover Mode for the demo.
-- **Recipient preview:** opens through a non-sensitive synthetic token and shows only the selected bundle.
-- **Reset:** returns to Living Mode and restores the seeded demo state.
+## Privacy and access architecture
 
-The bundle can contain selected records, document locations, nominee details, key contacts, first actions, and authority destinations. It cannot change records, reveal private items, or imply that the recipient is an heir or legal decision-maker.
+- All records begin owner-only.
+- Saving a new record requires a visibility choice before the action completes.
+- An invitation or synthetic token does not reveal records by itself.
+- Existence-only sharing is explicit and selected per person.
+- Full detail is a separate, stronger grant.
+- Recipients cannot edit, release, or view the complete Consent Log.
+- Handover is a separate read-only projection, not account access.
+- Visibility downgrades begin a simulated seven-day cooling-off period and are immediately logged.
+- Reset is visually obvious and restores the seeded synthetic case.
 
-## Frontend architecture
+## Visual direction
 
-The redesign uses a React/Vite-style component architecture with an explicit domain state layer and repository boundary. A backend adapter may later use Supabase, but the submission remains instantly demoable with seeded synthetic state and no authentication.
+The visual system follows the reference site's discipline: editorial pacing, high contrast, confident grotesk display type, restrained monospace metadata, thin dividers, large whitespace, and alternating dark/light sections. It does not copy the reference site's identity.
 
-Primary routes/surfaces:
+The On Record palette is deliberately distinct:
 
-- `/` — calm entry and evidence context.
-- `/demo` — guided/play-all continuous demo using the same state machine as the product.
-- `/records` — owner record workspace.
-- `/family` — members, reviewed share sets, and perspective preview.
-- `/handover` — recipient selection and read-only handover preview.
-- `/preview/:token` — synthetic, read-only recipient view.
+- Ink black for primary narrative sections
+- Warm bone for light sections
+- Muted indigo/ultramarine for progress and action
+- Blue-grey for secondary surfaces
+- Terracotta for warnings and concerns
+- Red only for destructive/error states
+- No green anywhere in the new visual system
 
-Core components:
+Surfaces are dark or bone-toned with subtle opacity, not generic gradient glass cards. Radius is restrained. Visual hierarchy comes from spacing, scale, dividers, and active-state contrast rather than card quantity.
 
-- `AppShell`
-- `ProgressRail`
-- `RecordList`
-- `RecordRow`
-- `RecordEditor`
-- `NomineeStatus`
-- `VisibilityPicker`
-- `ConsentLog`
-- `FamilyMemberList`
-- `PerspectivePreview`
-- `ConcernPanel`
-- `HandoverBuilder`
-- `HandoverPreview`
-- `DemoController`
-- `EvidencePanel`
+## Motion direction
 
-The component layer must not contain legal logic or duplicate domain rules. Rules live in pure functions and are tested independently.
+Motion explains the case flow:
 
-## Visual architecture
+- Hero lines enter in a short stagger.
+- Action cards reveal as the user reaches them.
+- Connector lines and status marks progress from one card to the next.
+- A visibility choice travels into the next preview and the Consent Log.
+- Recipient preview content changes in place.
+- Handover records assemble into a paper-like read-only projection.
+- Chat-like micro-previews, where useful, use a short typing-to-result sequence.
 
-The approved visual language is a calm, rounded, low-cost “glass-lite” utility:
+Motion uses transforms and opacity, has reduced-motion fallbacks, avoids layout thrashing, and never hides required content behind animation. Smooth scrolling is optional and must not be required for comprehension.
 
-- light neutral base;
-- deep readable text;
-- one active accent;
-- restrained semantic colors for status;
-- rounded surfaces with subtle borders and low-cost shadows;
-- translucent overlays only for focused panels;
-- no large blur stacks or video backgrounds;
-- no dense card wall or permanent multi-column dashboard;
-- mobile-first, one dominant action per view;
-- progressive disclosure for evidence, legal context, and audit details.
+## Responsive and accessibility requirements
 
-Typography is a highly legible sans-serif pairing with a Devanagari companion, generous line-height, and mono only for synthetic references and timestamps. The design must work at 360px width, with 44px minimum targets, visible focus, and no horizontal scrolling.
+- One primary action per active card.
+- Minimum 44px touch targets.
+- Keyboard focus and visible labels for all controls.
+- Sound-off comprehension: every step has readable text and status.
+- 360px minimum width with no horizontal overflow.
+- Hindi core journey remains understandable and does not rely on untranslated labels for safety states.
+- Low-end performance: no video backgrounds, no canvas-heavy effects, no large blur stacks, no network dependency for the demo.
 
-Motion is explanatory: records enter lists, visibility grants travel into the log, previews update, cooling-off state progresses, and handover bundles assemble. Animations use transforms and opacity where possible, are interruptible, and have reduced-motion fallbacks.
+## Demo script
 
-## Continuous demo
+The screen-recordable route starts in the same connected rail and progresses through:
 
-One fictional owner and three family members use a larger synthetic record set across money, property, documents, and wishes.
+1. Meera records the family home privately.
+2. The owner chooses existence-only visibility for Ananya.
+3. The next box becomes Ananya's exact read-only perspective.
+4. Ananya raises a concern; the owner sees a neutral status and the log records it.
+5. The owner previews a handover fork, selects facts, and chooses a recipient.
+6. The release step opens a synthetic read-only result.
+7. The owner resets to Living Mode.
 
-Guided mode provides Next, Back, Pause, Replay, and Reset. Play-all mode advances through the same real state transitions. The demo sequence is:
+The viewer should understand the complete product without narration. A secondary “inspect the real system” action may open the detailed record, consent, or handover surfaces after the main story is complete.
 
-1. Create a private record.
-2. Show nominee status and an incomplete record.
-3. Review and publish an existence-only set.
-4. Grant full detail to one member for one record.
-5. Show the audit event.
-6. Open a read-only recipient preview through a synthetic token.
-7. Raise a private concern and visible neutral concern status.
-8. Request a visibility downgrade and show the cooling-off state.
-9. Build a scoped handover bundle.
-10. Simulate release, inspect the read-only result, and reset.
+## Non-goals
 
-The demo must be understandable with sound off and must not depend on narration to explain the permissions.
-
-## Safety and honesty
-
-- Synthetic data only.
-- No real credentials, OTPs, Aadhaar, PAN, account numbers, or sensitive documents.
-- No live government API calls in the submission.
-- Government and institutional links are destinations only.
-- No government logo or implied endorsement.
-- No legal ownership, inheritance-share, eligibility, guarantee, or title-verification claims.
-- All fact cards show source, date/context, and confidence where needed.
-
+- No real authentication or identity verification in this submission.
+- No death verification or automated release trigger.
+- No government or institution API calls.
+- No legal-document drafting or will preparation.
+- No ownership, inheritance-share, eligibility, title, or dispute-outcome prediction.
+- No persistent personal data storage in the static demo.
