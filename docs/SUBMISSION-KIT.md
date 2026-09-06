@@ -2,7 +2,7 @@
 
 ## One-line pitch
 
-On Record helps a living owner record family assets and wishes privately, choose exactly what each person can see, and prepare a read-only handover before a dispute begins.
+On Record helps a living owner record family facts privately, choose exactly what each person can see, and prepare a read-only handover before a dispute begins.
 
 ## Product position
 
@@ -12,38 +12,38 @@ This is a family continuity and consent layer, not a will-maker, legal decision-
 
 ### 0:00–0:30 — The problem
 
-Open the homepage. Show the evidence cards and say: families often discover scattered records, unclear nominee status, and conflicting memories only after a death or property disagreement. The figures shown are sourced context, with their limitations visible.
+Open the homepage. Show the four problem signals and say: families often discover scattered records, unclear nominee status, and conflicting memories only after a death or property disagreement. On Record starts while the owner is alive, when facts and consent can still be reviewed.
 
 ### 0:30–1:15 — The working journey
 
-Open **See how it works** and use **Play all**. The continuous demo shows private records, a family member seeing only existence, full detail for a selected record, a concern, a seven-day cooling-off period, a handover bundle, and a simulated read-only release. Use **Replay** or **Reset** at the end.
+Click **Start the case** and use **Play all**. The connected rail moves through five visible actions: record privately, choose visibility, see the member view, fork a handover, and simulate a read-only release. Pause on the member view to show that Ananya sees existence-only records while sensitive details remain hidden. Use **Reset case** to make the reversibility obvious.
 
 ### 1:15–2:00 — The differentiator
 
-Pause the demo and open **My records**, **Family access**, and **Handover**. Add or expand a synthetic record, choose visibility before saving, change the nominee status, switch to Ananya or Arjun, open the synthetic recipient link, raise a concern, then select a different handover recipient. Point out that the owner sees the Consent Log, recipients do not get account access, and nothing is released in Living Mode.
+Replay manually. Change the consent tier, switch between Ananya, Arjun, and Kavya, raise a private concern, select a handover recipient, remove one fact from the bundle, then open the synthetic recipient link. Point out the Consent Log, the seven-day cooling-off concept on the detailed access view, nominee status as an asset-level field, and the separate read-only recipient view. Nothing releases an owner account and nothing decides legal entitlement.
 
 ## Project summary
 
-On Record is a private-first family continuity workspace for the moment before a family dispute and the handover after it. An owner records what exists across money, property, documents, and wishes; records start private; and every save, visibility change, nominee update, concern, handover selection, and release simulation leaves a Consent Log entry. Family members receive only the access the owner explicitly chooses: nothing, existence-only, or full detail. A visibility downgrade enters a simulated seven-day cooling-off period. A future nominee or handover recipient gets a separate read-only view, never the owner’s account.
+On Record is a private-first family continuity workspace for the moment before a family dispute and the handover after it. A living owner records what exists across money, property, documents, and wishes; records start private; and every save, visibility change, nominee update, concern, handover selection, and release simulation leaves a Consent Log entry. Family members receive only the access the owner explicitly chooses: nothing, existence-only, or full detail. A visibility downgrade enters a simulated seven-day cooling-off period. A future nominee or handover recipient gets a separate read-only view, never the owner’s account.
 
-The product does not make a will, decide ownership, or promise that a nominee is the final beneficiary. It records the current nomination status and explains that institution rules, valid instruments, and succession law still govern entitlement. It uses synthetic data, no login, no live government APIs, and no AI calls, so the journey is immediately reviewable from a static deployment. The architecture leaves a repository boundary for a later authenticated backend and authorised institution integrations.
+The product does not make a will, decide ownership, or promise that a nominee is the final beneficiary. It records nomination status and explains that institution rules, valid instruments, and succession law still govern entitlement. It uses synthetic data, no login, no live government APIs, and no AI calls, so the journey is immediately reviewable from a static deployment. The architecture leaves a clear boundary for a later authenticated backend and authorised institution integrations.
 
 ## Judge path
 
-1. Open `/` and notice the private-first promise, seeded family case, and sourced evidence.
-2. Open **See how it works**, click **Play all**, and let the 10-step story reach simulated release.
-3. Click **Reset**, then inspect **My records** and expand the bank account to see the missing-nominee state.
-4. Open **Family access**, switch between the three synthetic family members, and change one visibility tier.
-5. Open the recipient link. Confirm existence-only records reveal no sensitive detail and that a recipient can raise a concern without editing.
-6. Open **Handover**, change the recipient, adjust the read-only bundle, simulate release, then reset.
-7. Toggle Hindi and return to English. Use the source cards to inspect the research basis.
+1. Open `/` and notice the private-first promise, seeded family case, and connected five-action rail.
+2. Click **Start the case**, then **Play all**. Let the state reach simulated release.
+3. Click **Reset case**, open **Records**, and add a synthetic record. Choose visibility before saving it.
+4. Open **People**, switch among the three family members, and change one access tier. Review the member-scoped Consent Log.
+5. Open **Handover**, change the recipient and selected facts, then open the synthetic recipient link.
+6. Raise a concern from the recipient view. Confirm that the recipient can flag an issue but cannot edit the owner record.
+7. Toggle Hindi and return to English. Use the source rows to inspect the research basis.
 
 ## Recording checklist
 
 - Use a clean browser at 100% zoom and record 1280×720 or 1920×1080.
 - Use only the seeded synthetic family. Do not enter real names, IDs, account numbers, OTPs, or documents.
 - Keep the cursor visible and pause after each important state change.
-- Show **Reset demo** near the end so the simulation is visibly reversible.
+- Show **Reset case** near the end so the simulation is visibly reversible.
 - If deploying to GitHub Pages, publish the `dist/` folder and use the hash routes described in `DEPLOY.md`.
 
 ## Evidence basis
@@ -58,6 +58,6 @@ The product does not make a will, decide ownership, or promise that a nominee is
 
 ## What is real and what is mocked
 
-Real: the frontend journey, bilingual core UI, visibility state machine, recipient perspectives, audit events, cooling-off interaction, handover preview, resettable simulation, and source links.
+Real: the frontend journey, bilingual core UI, private-first visibility state machine, recipient perspectives, audit events, cooling-off interaction, handover preview, resettable simulation, and source links.
 
 Mocked: identity, authentication, invitation delivery, death trigger, institution APIs, document verification, legal entitlement, and any external release. The shipped build is deliberately safe for a public demo and keeps the future integration point explicit.

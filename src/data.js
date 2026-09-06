@@ -30,12 +30,12 @@ export const initialRecords = [
   { id: 'wishes-01', category: 'wishes', kind: 'Continuity note', title: 'What to find first', institution: 'Owner-authored note', reference: 'OR-DEMO-WISH-006', location: 'On Record · private', note: 'Call Ananya first. Start with the blue folder and the property file.', nomineeStatus: 'na', nomineeName: '', nomineeRelation: '', nomineeReviewed: '', visibility: 'private', handover: false },
 ];
 
-export const initialGrants = { 'ananya:property-01': 'existence', 'ananya:documents-01': 'existence', 'arjun:insurance-01': 'full', 'arjun:pf-01': 'existence' };
+export const initialGrants = { 'ananya:documents-01': 'existence', 'arjun:insurance-01': 'full', 'arjun:pf-01': 'existence' };
 
 export const initialEvents = [
   { id: 'evt-1', at: '06 Sep 2026 · 09:12', actor: 'Meera Sharma', label: 'Created the private family record', detail: '7 records started private by default.', scope: 'owner' },
   { id: 'evt-2', at: '06 Sep 2026 · 09:14', actor: 'Meera Sharma', label: 'Reviewed nominee status', detail: 'Bank account marked “Nominee missing”.', scope: 'owner' },
-  { id: 'evt-3', at: '06 Sep 2026 · 09:19', actor: 'Meera Sharma', label: 'Shared existence-only access', detail: 'Family home → Ananya Sharma.', scope: 'ananya' },
+  { id: 'evt-3', at: '06 Sep 2026 · 09:19', actor: 'Meera Sharma', label: 'Shared existence-only access', detail: 'Family certificates → Ananya Sharma.', scope: 'ananya' },
   { id: 'evt-4', at: '06 Sep 2026 · 09:23', actor: 'Meera Sharma', label: 'Shared full detail', detail: 'Life cover policy → Arjun Sharma.', scope: 'arjun' },
 ];
 
