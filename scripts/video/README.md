@@ -20,11 +20,24 @@ and `poster.jpg`. `output/` is gitignored, so the render lives locally only.
 ## Pipeline
 
 ```bash
-python scripts/video/1_voice.py       # narration + measured timings
-node   scripts/video/2_capture.mjs    # real UI states from dist/
-node   scripts/video/3_render.mjs     # 2,846 deterministic frames
-python scripts/video/4_compose.py     # mux + captions + poster
+# English cut -> build/
+python scripts/video/1_voice.py
+node   scripts/video/2_capture.mjs
+node   scripts/video/3_render.mjs
+python scripts/video/4_compose.py
+
+# Hindi cut -> build-hi/
+python scripts/video/1_voice.py --script=narration-hi.json
+node   scripts/video/2_capture.mjs --lang=hi
+node   scripts/video/3_render.mjs  --lang=hi
+python scripts/video/4_compose.py  --lang=hi
 ```
+
+Both cuts share one scene graph. The language layer in `film.html` translates the
+scene data and the static text nodes in a single pass, and `?lang=hi` on the
+captured app gives the Hindi cut genuinely Hindi product screens rather than
+English screens with Hindi subtitles. Devanagari carries matras above and below
+the line, so the Hindi cut relaxes the tight display leading used for Latin.
 
 `npm run build` first — `2_capture.mjs` serves `dist/`, not the dev server.
 `node scripts/video/3_render.mjs --probe` renders fourteen stills instead of the

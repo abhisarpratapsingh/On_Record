@@ -14,7 +14,8 @@ import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
-const BUILD = path.join(HERE, 'build');
+const LANG = (process.argv.find((a) => a.startsWith('--lang=')) || '--lang=en').split('=')[1];
+const BUILD = path.join(HERE, LANG === 'en' ? 'build' : `build-${LANG}`);
 const timings = JSON.parse(await readFile(path.join(BUILD, 'timings.json'), 'utf8'));
 
 const PROBE = process.argv.includes('--probe');
@@ -29,7 +30,8 @@ await mkdir(OUT, { recursive: true });
 const browser = await chromium.launch({ args: ['--force-color-profile=srgb', '--font-render-hinting=none'] });
 const page = await browser.newPage({ viewport: { width: 1920, height: 1080 }, deviceScaleFactor: 1 });
 await page.addInitScript((t) => { window.__TIMINGS__ = t; }, timings);
-await page.goto(pathToFileURL(path.join(HERE, 'film.html')).href, { waitUntil: 'load' });
+const filmUrl = pathToFileURL(path.join(HERE, 'film.html')).href + (LANG === 'en' ? '' : `?dir=build-${LANG}`);
+await page.goto(filmUrl, { waitUntil: 'load' });
 await page.waitForFunction(() => window.__ready !== undefined);
 await page.evaluate(() => window.__ready);
 
