@@ -19,7 +19,8 @@ code=$?
 
 if [ $code -eq 0 ]; then
     # This CLI emits a JSON envelope on stdout, not a bare URL.
-    deploymentUrl="https://$(node -p "JSON.parse(require('fs').readFileSync('$TMP/deployment-url.txt','utf8')).deployment.url")"
+    # deployment.url already carries the protocol on this CLI version.
+    deploymentUrl=$(node -p "new URL(JSON.parse(require('fs').readFileSync('$TMP/deployment-url.txt','utf8')).deployment.url).origin")
     echo "==> deployed: $deploymentUrl"
 
     # Verify the build is byte-identical to the local reference build. Vite names
@@ -30,7 +31,9 @@ if [ $code -eq 0 ]; then
              | grep -oE 'assets/index-[A-Za-z0-9_-]+\.js' | head -1)
     echo "    local build : ${expected:-<none>}"
     echo "    deployed    : ${actual:-<none>}"
-    if [ -n "$actual" ] && [ "$expected" = "$actual" ]; then
+    prod=$(curl -s --max-time 30 https://on-record-livid.vercel.app/            | grep -oE 'assets/index-[A-Za-z0-9_-]+\.js' | head -1)
+    echo "    production  : ${prod:-<none>}  (on-record-livid.vercel.app)"
+    if [ -n "$prod" ] && [ "$expected" = "$prod" ]; then
         echo "    MATCH - deployed bundle is identical to the local build"
     else
         echo "    NO MATCH - inspect the build before sharing the link"
