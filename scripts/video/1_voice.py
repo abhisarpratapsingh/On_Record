@@ -20,9 +20,16 @@ import edge_tts
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 HERE = pathlib.Path(__file__).resolve().parent
-BUILD = HERE / "build"
+
+# The pipeline is language-parameterised: pass a narration file and the build
+# directory follows it, so the English and Hindi cuts never overwrite each other.
+_args = [a for a in sys.argv[1:] if not a.startswith("--")]
+_flags = {a.split("=")[0]: a.split("=", 1)[-1] for a in sys.argv[1:] if a.startswith("--")}
+SCRIPT_FILE = HERE / _flags.get("--script", "narration.json")
+SCRIPT = json.loads(SCRIPT_FILE.read_text(encoding="utf-8"))
+LANG = SCRIPT.get("lang", "en")
+BUILD = HERE / ("build" if LANG == "en" else f"build-{LANG}")
 VOICE_DIR = BUILD / "voice"
-SCRIPT = json.loads((HERE / "narration.json").read_text(encoding="utf-8"))
 
 
 def probe_duration(path: pathlib.Path) -> float:
@@ -44,13 +51,15 @@ async def synthesise(segment, rate, pitch):
 
 
 async def main():
-    rate = sys.argv[1] if len(sys.argv) > 1 else SCRIPT["rate"]
+    rate = _args[0] if _args else SCRIPT["rate"]
     pitch = SCRIPT.get("pitch", "+0Hz")
     VOICE_DIR.mkdir(parents=True, exist_ok=True)
 
     gap = SCRIPT["gapMs"] / 1000.0
     timings = []
-    cursor = 0.6  # a short breath before the first line
+    lead = SCRIPT.get("leadMs", 600) / 1000.0
+    tail = SCRIPT.get("tailMs", 1400) / 1000.0
+    cursor = lead  # a short breath before the first line
 
     for segment in SCRIPT["segments"]:
         path = await synthesise(segment, rate, pitch)
@@ -66,7 +75,7 @@ async def main():
         cursor += dur + gap
         print(f"  {segment['id']}  {dur:6.2f}s  ->  {cursor:6.2f}s")
 
-    total = round(cursor - gap + 1.4, 3)  # hold the closing card after the last word
+    total = round(cursor - gap + tail, 3)  # hold the closing card after the last word
 
     # Lay each clip onto a silent bed at its exact timeline position. Mixing with
     # per-input adelay (rather than concatenating) means the rendered audio and
@@ -100,10 +109,10 @@ async def main():
     subprocess.run(cmd, check=True)
 
     (BUILD / "timings.json").write_text(
-        json.dumps({"total": total, "fps": 24, "segments": timings}, indent=2),
+        json.dumps({"total": total, "fps": 24, "lang": LANG, "segments": timings}, indent=2),
         encoding="utf-8",
     )
-    print(f"\ntotal narration timeline: {total:.2f}s  ({total/60:.2f} min)")
+    print(f"\n[{LANG}] narration timeline: {total:.2f}s  ({total/60:.2f} min)")
     if total > 120:
         print(f"OVER BUDGET by {total - 120:.2f}s - re-run with a faster rate")
 

@@ -17,7 +17,8 @@ import { fileURLToPath } from 'node:url';
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '..', '..');
 const DIST = path.join(ROOT, 'dist');
-const OUT = path.join(HERE, 'build', 'screens');
+const LANG = (process.argv.find((a) => a.startsWith('--lang=')) || '--lang=en').split('=')[1];
+const OUT = path.join(HERE, LANG === 'en' ? 'build' : `build-${LANG}`, 'screens');
 const PORT = 4319;
 
 const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.json': 'application/json' };
@@ -36,7 +37,8 @@ function serve() {
   return new Promise((resolve) => server.listen(PORT, () => resolve(server)));
 }
 
-const base = `http://127.0.0.1:${PORT}/`;
+// the app reads ?lang from the query string, and hash routing preserves it
+const base = `http://127.0.0.1:${PORT}/${LANG === 'en' ? '' : `?lang=${LANG}`}`;
 
 /** Freeze scroll reveals and the caret so every capture is a settled frame. */
 const SETTLE_CSS = `
@@ -75,7 +77,7 @@ await page.goto(base + '#/', { waitUntil: 'networkidle' });
 await page.addStyleTag({ content: SETTLE_CSS });
 await page.waitForTimeout(700);
 
-console.log('capturing On Record screens...');
+console.log(`capturing On Record screens [${LANG}]...`);
 
 // 01 — the owner's landing view
 await shot(page, '01-hero');

@@ -185,6 +185,22 @@
   #closeGoal em{font-style:normal;color:var(--indigo)}
   #closeMark{position:absolute;left:0;right:0;top:742px;text-align:center;opacity:0;
     font:500 13px var(--mono);letter-spacing:.28em;text-transform:uppercase;color:var(--muted)}
+
+  /* Devanagari carries matras above and below the line, so the tight display
+     leading used for Latin display type clips it. Relax it for the Hindi cut. */
+  .lang-hi .branch h4, .lang-hi .panel h4, .lang-hi .calls h3,
+  .lang-hi .not .ph b, .lang-hi #closeLine, .lang-hi #closeGoal,
+  .lang-hi #s_open .lede, .lang-hi .fact .cap{line-height:1.34}
+  .lang-hi #forkTitle h2{line-height:1.12}
+  .lang-hi .branch h4{font-size:36px}
+  .lang-hi .calls h3{font-size:38px}
+  .lang-hi .not .ph b{font-size:38px}
+  .lang-hi #closeGoal{font-size:74px}
+  .lang-hi #closeLine{font-size:52px}
+  .lang-hi #s_open .lede{font-size:62px}
+  .lang-hi .panel h4{font-size:44px}
+  .lang-hi .kicker,.lang-hi .call b,.lang-hi .branch .n,.lang-hi .panel .n,
+  .lang-hi .fact .qual i,.lang-hi #footL,.lang-hi #footR,.lang-hi #act{letter-spacing:.12em}
 </style>
 </head>
 <body>
@@ -368,6 +384,136 @@ const T = window.__TIMINGS__;          // injected by 3_render.mjs
 const seg = {}; T.segments.forEach(s => seg[s.scene] = s);
 const S = (name) => seg[name];
 const TOTAL = T.total;
+const SHOT_DIR = (new URLSearchParams(location.search).get('dir') || 'build') + '/screens/';
+
+// ─── language ───
+// The film's own typography is translated here rather than duplicated into a
+// second document, so both cuts stay one scene graph on one timeline.
+const LANG = T.lang || 'en';
+const HI = {
+  "On Record · Family continuity": "On Record · पारिवारिक निरंतरता",
+  "A family dispute rarely starts in court.": "परिवार का विवाद अदालत से शुरू नहीं होता।",
+  "A missing document": "एक गुम दस्तावेज़",
+  "An unclear nominee": "एक अस्पष्ट nominee",
+  "Two people, two memories of the same property": "एक ही संपत्ति, दो अलग यादें",
+  "What this shows": "यह क्या दिखाता है",
+  "What it does not show": "यह क्या नहीं दिखाता",
+  "Source": "स्रोत",
+  "of Indian household wealth is held in real estate and other physical assets.": "भारतीय परिवारों की संपत्ति ज़मीन, मकान और दूसरी भौतिक संपत्तियों में है।",
+  "Why a property record carries so much of a family’s life.": "इसलिए संपत्ति का रिकॉर्ड परिवार के लिए इतना अहम है।",
+  "It does not mean 84% of property is disputed.": "इसका मतलब यह नहीं कि 84% संपत्ति विवादित है।",
+  "of civil cases in the cited research are land and property matters.": "उद्धृत शोध में सिविल मामले ज़मीन और संपत्ति से जुड़े हैं।",
+  "Property disagreement dominates that civil caseload.": "उस शोध में संपत्ति विवाद सबसे बड़ा हिस्सा है।",
+  "It is not a census of every civil case in India.": "यह भारत के हर सिविल मामले की गिनती नहीं है।",
+  "≈ 20 years": "≈ 20 साल",
+  "average time for a land-acquisition dispute to reach Supreme Court resolution.": "भूमि अधिग्रहण विवाद को सुप्रीम कोर्ट तक हल होने में औसत समय।",
+  "How long an unresolved land question can run.": "अनसुलझा भूमि प्रश्न कितना लंबा चल सकता है।",
+  "Not the average for every family property case.": "हर पारिवारिक संपत्ति मामले का औसत नहीं।",
+  "pending district and taluka cases — including 1,12,94,941 civil.": "ज़िला और तालुका मामले लंबित — इनमें 1,12,94,941 सिविल।",
+  "The queue a matter joins once it is filed.": "मामला दर्ज होते ही यही कतार मिलती है।",
+  "A live dashboard figure that changes continuously.": "यह live आंकड़ा लगातार बदलता है।",
+  "Before the dispute": "विवाद से पहले",
+  "Owner": "मालिक",
+  "Mihir Sharma is alive and holds the record himself.": "मिहिर शर्मा जीवित हैं और रिकॉर्ड उनके पास है।",
+  "Meant to be revised, not sealed.": "यह बदलने के लिए है, बंद करने के लिए नहीं।",
+  "What exists": "क्या मौजूद है",
+  "Seven records": "सात रिकॉर्ड",
+  "Home, financial assets, documents and wishes.": "घर, वित्तीय संपत्तियाँ, दस्तावेज़ और इच्छाएँ।",
+  "Per asset": "हर संपत्ति पर",
+  "Nominee status sits on the record, not on the person.": "Nominee status रिकॉर्ड पर दर्ज है, व्यक्ति पर नहीं।",
+  "Everything starts private": "सब कुछ निजी से शुरू",
+  "Default": "तयशुदा",
+  "No family member sees anything yet.": "अभी किसी सदस्य को कुछ नहीं दिखता।",
+  "What Ananya can see": "अनन्या क्या देख सकती हैं",
+  "Existence-only": "सिर्फ़ मौजूदगी",
+  "She learns the family home is recorded — not its details.": "उन्हें पता चलता है कि घर दर्ज है, विवरण नहीं।",
+  "Per record": "हर रिकॉर्ड पर",
+  "Each row is decided on its own.": "हर पंक्ति अलग से तय होती है।",
+  "Ananya’s own view": "अनन्या का अपना view",
+  "Not the owner account": "मालिक का account नहीं",
+  "A separate read-only address.": "एक अलग read-only पता।",
+  "Two records": "दो रिकॉर्ड",
+  "Exactly what Mihir approved. Nothing more.": "सिर्फ़ वही जो मिहिर ने मंज़ूर किया।",
+  "The handover file": "Handover फ़ाइल",
+  "Selected facts": "चुने हुए तथ्य",
+  "Mihir picks what may be needed later.": "मिहिर चुनते हैं कि बाद में क्या ज़रूरी होगा।",
+  "A read-only preview. Nothing is released.": "सिर्फ़ पढ़ने वाला preview। कुछ जारी नहीं होता।",
+  "Private": "निजी",
+  "Most systems": "ज़्यादातर systems",
+  "Sharing is one irreversible decision.": "साझा करना एक ही, अपरिवर्तनीय फ़ैसला।",
+  "01 / Now, and always": "01 / अभी, और हमेशा",
+  "Private living record": "निजी living record",
+  "The owner's own copy. Nothing leaves it because someone was invited.": "मालिक की अपनी प्रति। आमंत्रण से कुछ बाहर नहीं जाता।",
+  "02 / Visible now": "02 / अभी दिखता है",
+  "What each person can see": "हर व्यक्ति क्या देख सकता है",
+  "Chosen per person, per record — and changeable.": "हर व्यक्ति और हर रिकॉर्ड पर तय, और बदला जा सकता है।",
+  "Full detail": "पूरी जानकारी",
+  "03 / Handed over later": "03 / बाद में सौंपा जाता है",
+  "A separate read-only projection, prepared in advance. Not the account.": "पहले से तैयार, अलग read-only प्रति। Account नहीं।",
+  "Asset-level fact · not a legal conclusion": "संपत्ति-स्तर का तथ्य · कोई क़ानूनी निष्कर्ष नहीं",
+  "In the record": "रिकॉर्ड में",
+  "Recorded per asset, because the nominee process is institution-specific.": "हर संपत्ति पर दर्ज, क्योंकि प्रक्रिया हर संस्था में अलग है।",
+  "What the record means": "रिकॉर्ड का अर्थ",
+  "Nominee is not owner": "Nominee मालिक नहीं है",
+  "RBI": "आर बी आई",
+  "Then": "फिर",
+  "So": "इसलिए",
+  "A nominee may receive funds as trustee for the legal heirs.": "Nominee क़ानूनी वारिसों के trustee के रूप में राशि पा सकता है।",
+  "Entitlement still depends on a valid instrument and succession law.": "अधिकार वैध दस्तावेज़ और उत्तराधिकार क़ानून पर निर्भर रहता है।",
+  "On Record stores the nomination, and points to the institution that decides.": "On Record nomination दर्ज करता है और उस संस्था की ओर इशारा करता है जो फ़ैसला करती है।",
+  "Records the nomination. Never the ownership.": "Nomination दर्ज करता है। मालिकाना हक़ नहीं।",
+  "A downgrade is a decision, not a reflex": "Visibility घटाना एक फ़ैसला है, प्रतिक्रिया नहीं",
+  "Seven-day cooling-off": "सात दिन की cooling-off",
+  "Days pending": "दिन शेष",
+  "Reversible": "वापस लिया जा सकता है",
+  "The owner can cancel the pending change at any point inside the window.": "मालिक इस अवधि में कभी भी लंबित बदलाव रद्द कर सकते हैं।",
+  "Voice without edit rights": "आवाज़, पर edit का अधिकार नहीं",
+  "The affected person can raise a concern. They still cannot edit the record.": "संबंधित व्यक्ति चिंता दर्ज कर सकता है, पर रिकॉर्ड बदल नहीं सकता।",
+  "Shared existence-only access": "सिर्फ़ मौजूदगी की अनुमति दी",
+  "Shared full detail": "पूरी जानकारी साझा की",
+  "Requested a visibility downgrade": "Visibility घटाने का अनुरोध",
+  "Raised a concern": "चिंता दर्ज की",
+  "Two different objects": "दो अलग चीज़ें",
+  "Owner account — never released": "मालिक का account — कभी जारी नहीं",
+  "Every record, full detail, edit rights, the whole history.": "हर रिकॉर्ड, पूरी जानकारी, edit अधिकार, पूरा इतिहास।",
+  "Handover file — read-only": "Handover फ़ाइल — सिर्फ़ पढ़ने के लिए",
+  "Only the selected facts. No edit access. A separate address.": "सिर्फ़ चुने हुए तथ्य। Edit नहीं। अलग पता।",
+  "No path across": "कोई रास्ता नहीं",
+  "What On Record does not do": "On Record क्या नहीं करता",
+  "Does not": "नहीं करता",
+  "Make a will": "वसीयत नहीं बनाता",
+  "Decide ownership": "मालिकाना हक़ तय नहीं करता",
+  "Replace a court, bank or authority": "अदालत, बैंक या प्राधिकरण की जगह नहीं लेता",
+  "Synthetic case FC-001 · no login · no live data · no government system contacted": "Synthetic case FC-001 · कोई login नहीं · कोई live data नहीं · किसी सरकारी सिस्टम से संपर्क नहीं",
+  "AI-generated narration": "AI-निर्मित आवाज़",
+  "The problem": "समस्या",
+  "On Record in use": "On Record काम करते हुए",
+  "The Consent Fork": "Consent Fork",
+  "The boundary": "सीमा"
+};
+const tr = (v) => (LANG === 'hi' && HI[v] !== undefined ? HI[v] : v);
+
+/** Translate static text nodes once, after the scene graph is built. */
+function translateStatic() {
+  if (LANG !== 'hi') return;
+  document.body.classList.add('lang-hi');
+  const walk = document.createTreeWalker(document.getElementById('stage'), NodeFilter.SHOW_TEXT);
+  const nodes = [];
+  while (walk.nextNode()) nodes.push(walk.currentNode);
+  nodes.forEach((n) => { const k = n.nodeValue.trim(); if (k && HI[k] !== undefined) n.nodeValue = HI[k]; });
+  // Sentences split across elements are rebuilt, not translated node by node.
+  const ft = document.querySelector('#forkTitle h2');
+  ft.textContent = 'Consent ';
+  const em = document.createElement('em'); em.textContent = 'Fork'; ft.appendChild(em);
+  document.getElementById('closeLine').textContent = 'कम गुम तथ्य। कम टकराती यादें। स्पष्ट सहमति।';
+  const cg = document.getElementById('closeGoal');
+  cg.textContent = 'परिवार का रिकॉर्ड, ';
+  cg.appendChild(document.createElement('br'));
+  cg.appendChild(document.createTextNode('परिवार का '));
+  const em2 = document.createElement('em'); em2.textContent = 'विवाद'; cg.appendChild(em2);
+  cg.appendChild(document.createTextNode(' न बने।'));
+}
+
 
 const clamp  = (v,a,b) => v<a?a:v>b?b:v;
 const norm   = (t,a,b) => clamp((t-a)/(b-a),0,1);
@@ -417,6 +563,7 @@ const FACTS = [
     neg:'A live dashboard figure that changes continuously.',
     src:'NJDG', url:'njdg.ecourts.gov.in' },
 ];
+FACTS.forEach((f) => { f.num = tr(f.num); f.cap = tr(f.cap); f.pos = tr(f.pos); f.neg = tr(f.neg); });
 const evWrap = document.getElementById('s_ev');
 FACTS.forEach((f,i) => {
   const card = node('div','fact'); card.id = 'fact'+i;
@@ -424,14 +571,14 @@ FACTS.forEach((f,i) => {
   left.appendChild(node('div','num '+f.cls, f.num));
   left.appendChild(node('div','cap', f.cap));
   const right = node('div','right');
-  [['pos','What this shows',f.pos],['neg','What it does not show',f.neg]].forEach(([k,lbl,body])=>{
+  [['pos', tr('What this shows'), f.pos], ['neg', tr('What it does not show'), f.neg]].forEach(([k,lbl,body])=>{
     const q = node('div','qual '+k);
     q.appendChild(node('i',null,lbl));
     q.appendChild(node('p',null,body));
     right.appendChild(q);
   });
   const src = node('div','src');
-  src.appendChild(node('b',null,'Source'));
+  src.appendChild(node('b', null, tr('Source')));
   src.appendChild(document.createTextNode(' · ' + f.src + ' · ' + f.url));
   right.appendChild(src);
   card.appendChild(left); card.appendChild(right);
@@ -458,10 +605,11 @@ const SHOTS = [
       ['Selected facts','Mihir picks what may be needed later.'],
       ['Simulated','A read-only preview. Nothing is released.']] },
 ];
+SHOTS.forEach((sh) => { sh.head = tr(sh.head); sh.calls = sh.calls.map((c) => [tr(c[0]), tr(c[1])]); });
 const win = document.getElementById('win');
 const callList = document.getElementById('callList');
 SHOTS.forEach((s,i) => {
-  const im = new Image(); im.src = 'build/screens/' + s.img; im.id = 'shot'+i; im.alt = '';
+  const im = new Image(); im.src = SHOT_DIR + s.img; im.id = 'shot'+i; im.alt = '';
   win.appendChild(im);
 });
 const CALL_MAX = 2;
@@ -477,6 +625,7 @@ const CHAIN = [
   ['Then', 'Entitlement still depends on a valid instrument and succession law.'],
   ['So',   'On Record stores the nomination, and points to the institution that decides.'],
 ];
+CHAIN.forEach((c, i) => { CHAIN[i] = [tr(c[0]), tr(c[1])]; });
 const nomChain = document.getElementById('nomChain');
 CHAIN.forEach((c,i)=>{
   const d = node('div'); d.id = 'chain'+i;
@@ -490,6 +639,7 @@ const COOL_NOTES = [
   ['Reversible','The owner can cancel the pending change at any point inside the window.'],
   ['Voice without edit rights','The affected person can raise a concern. They still cannot edit the record.'],
 ];
+COOL_NOTES.forEach((n, i) => { COOL_NOTES[i] = [tr(n[0]), tr(n[1])]; });
 const coolNotes = document.getElementById('coolNotes');
 COOL_NOTES.forEach((n,i)=>{
   const d = node('div','call'); d.id = 'cn'+i;
@@ -503,6 +653,7 @@ const LOG = [
   ['09:31','Requested a visibility downgrade','Full detail → Existence-only · cooling-off started'],
   ['09:33','Raised a concern','Ananya Sharma · private note to owner'],
 ];
+LOG.forEach((l, i) => { LOG[i] = [l[0], tr(l[1]), l[2]]; });
 const logList = document.getElementById('logList');
 LOG.forEach((l,i)=>{
   const d = node('div','logrow'); d.id = 'log'+i;
@@ -515,7 +666,7 @@ LOG.forEach((l,i)=>{
 
 // ── cold-open headline, word by word ────────────────────────────────────────
 const lede = document.getElementById('openLede');
-'A family dispute rarely starts in court.'.split(' ').forEach((w,i)=>{
+tr('A family dispute rarely starts in court.').split(' ').forEach((w,i)=>{
   const s = node('span','w', w);
   s.style.display = 'inline-block';
   lede.appendChild(s);
@@ -535,10 +686,10 @@ ringArc.style.strokeDasharray = RING_LEN;
 
 // ── act labels ──────────────────────────────────────────────────────────────
 const ACTS = [
-  [0,                            S('product-open').start-0.4, '01','The problem'],
-  [S('product-open').start-0.4,  S('fork-title').start-0.4,   '02','On Record in use'],
-  [S('fork-title').start-0.4,    S('boundary').start-0.4,     '03','The Consent Fork'],
-  [S('boundary').start-0.4,      TOTAL+1,                     '04','The boundary'],
+  [0,                            S('product-open').start-0.4, '01', tr('The problem')],
+  [S('product-open').start-0.4,  S('fork-title').start-0.4,   '02', tr('On Record in use')],
+  [S('fork-title').start-0.4,    S('boundary').start-0.4,     '03', tr('The Consent Fork')],
+  [S('boundary').start-0.4,      TOTAL+1,                     '04', tr('The boundary')],
 ];
 
 const scenes = {
@@ -705,8 +856,13 @@ function seek(t){
 
 window.__seek = seek;
 window.__ready = (async () => {
+  // static <img> tags are authored against the English cut; repoint them
+  document.querySelectorAll('img[src^="build/screens/"]').forEach((im) => {
+    im.setAttribute('src', SHOT_DIR + im.getAttribute('src').split('/').pop());
+  });
   await document.fonts.ready;
   await Promise.all([...document.images].map(i => i.complete ? Promise.resolve() : i.decode().catch(()=>{})));
+  translateStatic();
   seek(0);
   return true;
 })();
