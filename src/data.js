@@ -33,10 +33,10 @@ export const initialRecords = [
 export const initialGrants = { 'ananya:documents-01': 'existence', 'arjun:insurance-01': 'full', 'arjun:pf-01': 'existence' };
 
 export const initialEvents = [
-  { id: 'evt-1', at: '06 Sep 2026 · 09:12', actor: 'Meera Sharma', label: 'Created the private family record', detail: '7 records started private by default.', scope: 'owner' },
-  { id: 'evt-2', at: '06 Sep 2026 · 09:14', actor: 'Meera Sharma', label: 'Reviewed nominee status', detail: 'Bank account marked “Nominee missing”.', scope: 'owner' },
-  { id: 'evt-3', at: '06 Sep 2026 · 09:19', actor: 'Meera Sharma', label: 'Shared existence-only access', detail: 'Family certificates → Ananya Sharma.', scope: 'ananya' },
-  { id: 'evt-4', at: '06 Sep 2026 · 09:23', actor: 'Meera Sharma', label: 'Shared full detail', detail: 'Life cover policy → Arjun Sharma.', scope: 'arjun' },
+  { id: 'evt-1', at: '06 Sep 2026 · 09:12', actor: 'Mihir Sharma', label: 'Created the private family record', detail: '7 records started private by default.', scope: 'owner' },
+  { id: 'evt-2', at: '06 Sep 2026 · 09:14', actor: 'Mihir Sharma', label: 'Reviewed nominee status', detail: 'Bank account marked “Nominee missing”.', scope: 'owner' },
+  { id: 'evt-3', at: '06 Sep 2026 · 09:19', actor: 'Mihir Sharma', label: 'Shared existence-only access', detail: 'Family certificates → Ananya Sharma.', scope: 'ananya' },
+  { id: 'evt-4', at: '06 Sep 2026 · 09:23', actor: 'Mihir Sharma', label: 'Shared full detail', detail: 'Life cover policy → Arjun Sharma.', scope: 'arjun' },
 ];
 
 export const cloneSeed = () => ({ records: structuredClone(initialRecords), grants: { ...initialGrants }, events: structuredClone(initialEvents), concerns: {}, pendingDowngrades: {}, handover: { recipient: 'ananya', selected: ['property-01', 'insurance-01', 'documents-01'], released: false } });
