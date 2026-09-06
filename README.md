@@ -1,2 +1,5 @@
-# On_Record
-On Record is one citizen journey across all of it. One place to see what the record currently says, flag where it doesn't match what the family believes, and generate the documents the family needs, so they arrive at a government office with paperwork instead of arriving at a court with a grievance.
+# On Record
+
+On Record is a privacy-first family continuity record. It helps a living owner record financial and property facts, choose who can see what, preserve a Consent Log, and prepare a read-only handover for later.
+
+This Phase 2 submission is a React/Vite frontend with seeded synthetic data. No login, live government system, or real personal/financial data is used. Supabase is intentionally deferred until a real production pilot needs shared persistence and verified release workflows.

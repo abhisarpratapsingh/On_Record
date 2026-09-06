@@ -1,2 +1,0 @@
-/* Awwwards-inspired, purpose-led motion: opacity/transform only, zero runtime dependency. */
-.topbar,.panel,.asset-card,.result,.share-preview{animation:rise-in .55s cubic-bezier(.16,1,.3,1) both}.btn{transition:transform .2s ease,background-color .2s ease,color .2s ease}.btn:hover{transform:translateY(-2px)}@keyframes rise-in{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}@media(prefers-reduced-motion:reduce){.topbar,.panel,.asset-card,.result,.share-preview{animation:none}.btn{transition:none}}
