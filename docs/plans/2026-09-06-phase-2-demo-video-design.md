@@ -1,33 +1,51 @@
 # Phase 2 demo video design
 
+Status: built. See `scripts/video/README.md` for the as-built pipeline and
+`output/video/on-record-phase-2.mp4` for the render.
+
 ## Goal
 
-Produce a two-minute judging video for Build What Moves India Phase 2. The first minute establishes the record-clarity problem and shows the working product. The second minute focuses on the Consent Fork as the differentiator.
+A two-minute judging film for Build What Moves India Phase 2. Minute one
+establishes the record-clarity problem and shows the working product. Minute two
+focuses on the Consent Fork as the differentiator.
 
 ## Narrative architecture
 
-1. **0:00–0:22 — Stakes.** Editorial statistic cards establish why record clarity matters, without claiming the product resolves ownership or litigation.
-2. **0:22–1:00 — Product proof.** Real captured UI follows Mihir recording facts, selecting Ananya's existence-only access, previewing her separate view, and preparing a handover.
-3. **1:00–1:48 — Differentiator.** A three-state visual explains private living record → current visibility → future handover. Product captures show asset-level nominee status, the seven-day visibility-downgrade cooling-off period, Consent Log, and a separate read-only recipient file.
-4. **1:48–2:00 — Boundary and close.** The film explicitly says On Record does not make a will, decide ownership, or replace authorities, then lands the prevention-focused close.
+1. **0:00–0:31 — Stakes.** Four sourced figures, each carrying a "what this shows /
+   what it does not show" pair, so no number is inflated beyond its evidence. The
+   film never claims On Record resolves ownership or reduces litigation.
+2. **0:31–1:02 — Product proof.** Six captured states of the real frontend follow
+   Mihir recording facts, granting Ananya existence-only access, her separate
+   read-only view, and the prepared handover file.
+3. **1:02–1:42 — Differentiator.** An animated fork separates the private living
+   record, what each person can see now, and what may be handed over later. Then
+   asset-level nominee status with the RBI trustee framing, the seven-day
+   cooling-off on a real pending downgrade, and the Consent Log.
+4. **1:42–1:58 — Boundary and close.** Three struck-through claims — no will, no
+   ownership decision, no replacement for a court, bank or authority — then the
+   prevention statement.
 
 ## Visual system
 
 - 16:9, 1920×1080, 24 fps.
-- Ink/navy, bone, terracotta, and muted lavender aligned to the existing app.
-- Quiet editorial motion: fine rules, paper-like cards, large numeric typography, restrained easing.
-- Live frontend screens are contained in a rounded browser frame; graphically animated evidence cards bridge the product scenes.
+- Ink, bone, indigo and terracotta tokens taken directly from `src/styles.css`, so
+  the film and the product read as one system.
+- Quiet editorial motion: hairlines, large condensed numerals, restrained easing.
+- Live frontend captures sit in a rounded browser frame with a slow pan that
+  reveals the part of each screen proving the claim; graphic scenes bridge them.
 
 ## Production pipeline
 
-1. Serve and capture the local Vite frontend at key states with Playwright.
-2. Generate an AI voiceover from the supplied script, paced to approximately 120 seconds; disclose it as AI narration.
-3. Compose still captures, text animations, evidence cards, and source footers with FFmpeg.
-4. Render MP4/H.264 plus a caption file and a concise production README.
+1. Synthesise the narration per sentence, measure real durations, emit `timings.json`.
+2. Capture real UI states by driving the built app through one Playwright session.
+3. Render `film.html` deterministically via `window.__seek(t)`, one screenshot per frame.
+4. Mux frames and the narration bed with FFmpeg; emit MP4, SRT and poster.
 
 ## Quality checks
 
-- Exact legal/product boundaries retained in spoken and on-screen copy.
-- Every number matches its qualified source and use case.
-- At least one actual in-product screen proves each critical workflow claim.
-- Verify duration, audio presence, and final rendered frames.
+- Duration 118.50 s, under the two-minute limit.
+- Audio verified present and continuous at −16.5 dB mean, −1.5 dB peak.
+- Caption cues verified non-overlapping.
+- Every number matches its qualified source and stated use.
+- Each critical workflow claim is backed by an actual in-product screen whose state
+  was produced by really performing the action, not staged.

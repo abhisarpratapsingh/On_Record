@@ -1,0 +1,726 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>On Record — Phase 2 film</title>
+<style>
+  /* Palette lifted from src/styles.css so the film and the product read as one system. */
+  :root{
+    --ink:#0b0b09; --coal:#141412; --panel:#1a1a17;
+    --bone:#f1efe9; --bone-2:#e6e3dc; --paper:#f8f6f0; --white:#f8f7f2;
+    --muted:#9a9a92; --muted-2:#6f6f66;
+    --line:rgba(248,247,242,.14);
+    --indigo:#9c9bea; --indigo-deep:#5656a8; --blue-grey:#aeb4cb; --terracotta:#c87b63;
+    --mono:ui-monospace,SFMono-Regular,Consolas,"Courier New",monospace;
+    --sans:Inter,"Segoe UI",system-ui,-apple-system,sans-serif;
+    --cond:"Arial Narrow","Helvetica Neue Condensed",Inter,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:1920px;height:1080px;overflow:hidden;background:var(--ink);color:var(--white);
+    font-family:var(--sans);-webkit-font-smoothing:antialiased;text-rendering:geometricPrecision}
+  #stage{position:relative;width:1920px;height:1080px;overflow:hidden;background:var(--ink)}
+  .scene{position:absolute;inset:0;opacity:0;will-change:opacity,transform}
+  .kicker{font:500 15px/1 var(--mono);letter-spacing:.26em;text-transform:uppercase;color:var(--blue-grey)}
+
+  /* ---------- persistent chrome ---------- */
+  #chrome{position:absolute;inset:0;pointer-events:none;z-index:60}
+  #wordmark{position:absolute;left:72px;top:58px;display:flex;align-items:center;gap:14px}
+  #wordmark .mk{display:grid;place-items:center;width:40px;height:40px;border:1px solid var(--blue-grey);
+    border-radius:50%;font:500 12px var(--mono);letter-spacing:-.06em}
+  #wordmark b{display:block;font:600 18px/1 var(--cond);letter-spacing:.2em;text-transform:uppercase}
+  #wordmark small{display:block;margin-top:6px;font:500 10px/1 var(--mono);letter-spacing:.2em;color:var(--muted)}
+  #act{position:absolute;right:72px;top:62px;text-align:right;font:500 13px/1.7 var(--mono);
+    letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+  #act b{color:var(--indigo);font-weight:500}
+  #footL{position:absolute;left:72px;bottom:46px;font:500 11px/1 var(--mono);letter-spacing:.2em;
+    text-transform:uppercase;color:var(--muted-2)}
+  #footR{position:absolute;right:72px;bottom:46px;font:500 11px/1 var(--mono);letter-spacing:.2em;
+    text-transform:uppercase;color:var(--muted-2)}
+  #bar{position:absolute;left:0;bottom:0;height:2px;width:0;background:var(--indigo);opacity:.8}
+  #barTrack{position:absolute;left:0;bottom:0;height:2px;width:100%;background:rgba(248,247,242,.08)}
+
+  /* ---------- subtitles ---------- */
+  #sub{position:absolute;left:50%;bottom:96px;transform:translateX(-50%);width:1500px;z-index:70;
+    text-align:center;text-wrap:balance;opacity:0}
+  #sub span{display:inline;box-decoration-break:clone;-webkit-box-decoration-break:clone;
+    background:rgba(11,11,9,.82);border-bottom:1px solid rgba(156,155,234,.35);
+    padding:.42em .7em;font:400 25px/1.62 var(--sans);color:var(--bone);letter-spacing:.004em}
+
+  /* ---------- grain + vignette ---------- */
+  #grain{position:absolute;inset:0;z-index:55;pointer-events:none;opacity:.05;mix-blend-mode:overlay}
+  #vig{position:absolute;inset:0;z-index:54;pointer-events:none;
+    background:radial-gradient(ellipse 78% 68% at 50% 46%,transparent 42%,rgba(0,0,0,.55) 100%)}
+
+  /* ---------- 01 cold open ---------- */
+  #s_open{display:grid;place-content:center;text-align:center}
+  #s_open .lede{font:600 74px/1.16 var(--cond);letter-spacing:.005em;text-transform:uppercase;
+    color:var(--white);max-width:1400px}
+  #s_open .frag{display:flex;justify-content:center;margin-top:64px}
+  #s_open .frag div{width:376px;padding:30px 34px 0;border-top:1px solid var(--line);opacity:0}
+  #s_open .frag i{display:block;font:500 12px/1 var(--mono);letter-spacing:.24em;color:var(--indigo);
+    font-style:normal;margin-bottom:16px}
+  #s_open .frag p{font:400 23px/1.5 var(--sans);color:var(--bone-2)}
+
+  /* ---------- 02 evidence ---------- */
+  .fact{position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr;align-content:center;
+    column-gap:110px;padding:0 150px;opacity:0}
+  .fact .num{font:600 224px/.86 var(--cond);letter-spacing:-.015em;color:var(--white);white-space:nowrap}
+  .fact .num.sm{font-size:132px}
+  .fact .cap{margin-top:34px;font:400 30px/1.42 var(--sans);color:var(--bone-2);max-width:640px}
+  .fact .right{align-self:center}
+  .fact .qual{border-top:1px solid var(--line);padding-top:26px;margin-bottom:34px;opacity:0}
+  .fact .qual i{display:block;font:500 12px/1 var(--mono);letter-spacing:.24em;font-style:normal;
+    margin-bottom:14px}
+  .fact .qual.pos i{color:var(--indigo)} .fact .qual.neg i{color:var(--terracotta)}
+  .fact .qual p{font:400 24px/1.5 var(--sans);color:var(--bone)}
+  .fact .src{margin-top:52px;font:500 13px/1.8 var(--mono);letter-spacing:.14em;color:var(--muted-2);
+    text-transform:uppercase;opacity:0}
+  .fact .src b{color:var(--blue-grey);font-weight:500}
+
+  /* ---------- 03 product ---------- */
+  .frame{position:absolute;left:118px;top:214px;width:1190px;height:668px;border-radius:16px;
+    overflow:hidden;background:var(--bone);border:1px solid rgba(248,247,242,.16);
+    box-shadow:0 46px 120px rgba(0,0,0,.62)}
+  .frame .bar{height:44px;background:#121210;display:flex;align-items:center;gap:9px;padding:0 18px;
+    border-bottom:1px solid rgba(248,247,242,.1)}
+  .frame .bar i{width:9px;height:9px;border-radius:50%;background:#3a3a35;display:block}
+  .frame .url{margin-left:20px;height:24px;flex:1;max-width:560px;border-radius:12px;
+    background:rgba(248,247,242,.07);display:flex;align-items:center;padding:0 14px;
+    font:500 12px var(--mono);letter-spacing:.09em;color:var(--muted)}
+  .frame .win{position:relative;width:100%;height:624px;background:var(--bone);overflow:hidden}
+  .frame .win img{position:absolute;left:0;top:0;width:100%;height:auto;opacity:0}
+  .stamp{position:absolute;inset:0;display:grid;place-content:center;opacity:0;
+    background:rgba(11,11,9,.5)}
+  .stamp b{font:600 116px/1 var(--cond);letter-spacing:.16em;text-transform:uppercase;color:var(--white);
+    border:2px solid var(--indigo);padding:22px 54px;border-radius:6px}
+  .calls{position:absolute;right:118px;top:236px;width:440px}
+  .calls h3{font:600 44px/1.12 var(--cond);text-transform:uppercase;letter-spacing:.01em;
+    margin-bottom:28px;color:var(--white)}
+  .call{opacity:0;padding:22px 0 22px 26px;border-left:1px solid var(--line);position:relative}
+  .call::before{content:"";position:absolute;left:-4px;top:30px;width:7px;height:7px;border-radius:50%;
+    background:var(--indigo)}
+  .call b{display:block;font:500 12px/1 var(--mono);letter-spacing:.22em;text-transform:uppercase;
+    color:var(--blue-grey);margin-bottom:11px}
+  .call p{font:400 22px/1.45 var(--sans);color:var(--bone-2)}
+
+  /* ---------- 04 consent fork ---------- */
+  #forkTitle{position:absolute;left:150px;top:196px;width:1620px;opacity:0}
+  #forkTitle h2{font:600 96px/1 var(--cond);text-transform:uppercase;letter-spacing:.005em}
+  #forkTitle h2 em{font-style:normal;color:var(--indigo)}
+  #oldWay{position:absolute;left:150px;top:330px;width:780px;opacity:0}
+  #oldWay .lbl{font:500 12px/1 var(--mono);letter-spacing:.24em;color:var(--terracotta);
+    text-transform:uppercase;margin-bottom:18px}
+  #oldWay .line{position:relative;display:flex;align-items:center;padding:22px 26px;
+    border:1px solid rgba(200,123,99,.34);border-radius:10px;background:rgba(200,123,99,.07)}
+  #oldWay .line p{font:400 23px/1.35 var(--sans);color:var(--bone-2)}
+  #oldStrike{position:absolute;left:26px;right:26px;top:50%;height:1px;background:var(--terracotta);
+    transform-origin:left center;transform:scaleX(0)}
+  #forkSvg{position:absolute;left:150px;top:440px}
+  .branch{position:absolute;opacity:0}
+  .branch .n{font:500 12px/1 var(--mono);letter-spacing:.24em;color:var(--indigo);margin-bottom:14px}
+  .branch h4{font:600 42px/1.04 var(--cond);text-transform:uppercase;margin-bottom:14px}
+  .branch p{font:400 21px/1.44 var(--sans);color:var(--bone-2);max-width:440px}
+  .branch .tiers{display:flex;gap:8px;margin-top:18px}
+  .branch .tiers span{font:500 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;
+    padding:9px 13px;border:1px solid var(--line);border-radius:999px;color:var(--muted)}
+  .branch .tiers span.on{border-color:var(--indigo);color:var(--indigo)}
+
+  /* ---------- 05 nominee ---------- */
+  .split{position:absolute;left:150px;right:150px;top:250px;display:grid;
+    grid-template-columns:1fr 1fr;gap:96px}
+  .panel{opacity:0}
+  .panel .n{font:500 12px/1 var(--mono);letter-spacing:.24em;color:var(--blue-grey);margin-bottom:22px}
+  .panel h4{font:600 52px/1.04 var(--cond);text-transform:uppercase;margin-bottom:24px}
+  .panel p{font:400 23px/1.5 var(--sans);color:var(--bone-2)}
+  .chain div{display:flex;gap:18px;align-items:flex-start;padding:20px 0;border-top:1px solid var(--line);
+    opacity:0}
+  .chain i{font:500 12px/1.6 var(--mono);color:var(--indigo);font-style:normal;min-width:44px}
+  .chain p{font:400 22px/1.45 var(--sans);color:var(--bone-2)}
+  .verdict{margin-top:34px;padding:26px 30px;border:1px solid rgba(156,155,234,.42);border-radius:10px;
+    background:rgba(156,155,234,.08);opacity:0}
+  .verdict b{display:block;font:600 34px/1.1 var(--cond);text-transform:uppercase;color:var(--indigo);
+    margin-bottom:10px;letter-spacing:.02em}
+  .verdict p{font:400 20px/1.45 var(--sans);color:var(--bone-2)}
+  .shot{border-radius:12px;overflow:hidden;border:1px solid rgba(248,247,242,.16);background:var(--bone);
+    box-shadow:0 34px 90px rgba(0,0,0,.55);position:relative}
+  .shot img{display:block;width:100%;height:auto}
+
+  /* ---------- 06 cooling off ---------- */
+  #ring{position:absolute;right:196px;top:286px;width:300px;height:300px;opacity:0}
+  #ring .lbl{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
+  #ring .lbl b{display:block;font:600 84px/1 var(--cond);color:var(--white)}
+  #ring .lbl small{display:block;margin-top:10px;font:500 12px var(--mono);letter-spacing:.22em;
+    color:var(--blue-grey);text-transform:uppercase}
+  .logrow{display:flex;gap:16px;padding:15px 0;border-bottom:1px solid var(--line);opacity:0}
+  .logrow i{font:500 11px/1.7 var(--mono);color:var(--indigo);font-style:normal;min-width:52px}
+  .logrow p{font:400 19px/1.4 var(--sans);color:var(--bone-2)}
+  .logrow p small{display:block;font-size:16px;color:var(--muted);margin-top:3px}
+
+  /* ---------- 07 separation ---------- */
+  .sepCol{opacity:0;text-align:center}
+  .sepCol .cap{margin-top:26px;font:500 12px/1 var(--mono);letter-spacing:.24em;text-transform:uppercase}
+  .sepCol .cap.a{color:var(--terracotta)} .sepCol .cap.b{color:var(--indigo)}
+  .sepCol .cap em{display:block;font-style:normal;font-family:var(--sans);font-size:20px;
+    letter-spacing:0;text-transform:none;color:var(--bone-2);margin-top:12px}
+  #sepWall{position:absolute;left:50%;top:238px;width:1px;height:560px;background:var(--line);
+    transform:translateX(-50%) scaleY(0);transform-origin:top center}
+  #sepWall b{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);white-space:nowrap;
+    background:var(--ink);padding:14px 18px;font:500 11px var(--mono);letter-spacing:.22em;
+    color:var(--muted);text-transform:uppercase}
+
+  /* ---------- 08 close ---------- */
+  #closeKick{position:absolute;left:0;right:0;top:300px;text-align:center;opacity:0}
+  .nots{position:absolute;left:0;right:0;top:370px;display:flex;justify-content:center}
+  .not{width:412px;padding:0 34px;opacity:0;text-align:center}
+  .not small{display:block;margin-bottom:20px;font:500 11px var(--mono);letter-spacing:.22em;
+    color:var(--terracotta);text-transform:uppercase}
+  .not .ph{position:relative;height:172px;display:grid;place-content:center}
+  .not .ph b{display:block;font:600 44px/1.12 var(--cond);text-transform:uppercase;color:#8f8f86}
+  .not .x{position:absolute;left:0;right:0;top:50%;height:1px;background:var(--terracotta);
+    transform-origin:left center;transform:scaleX(0)}
+  #closeLine{position:absolute;left:50%;top:672px;width:1460px;margin-left:-730px;
+    font:600 62px/1.24 var(--cond);text-transform:uppercase;opacity:0;color:var(--white);text-align:center}
+  #closeGoal{position:absolute;left:50%;top:452px;width:1520px;margin-left:-760px;
+    font:600 92px/1.1 var(--cond);text-transform:uppercase;opacity:0;color:var(--white);text-align:center}
+  #closeGoal em{font-style:normal;color:var(--indigo)}
+  #closeMark{position:absolute;left:0;right:0;top:742px;text-align:center;opacity:0;
+    font:500 13px var(--mono);letter-spacing:.28em;text-transform:uppercase;color:var(--muted)}
+</style>
+</head>
+<body>
+<div id="stage">
+
+  <!-- ============ 01 COLD OPEN ============ -->
+  <section class="scene" id="s_open">
+    <div>
+      <div class="kicker" id="openKick" style="margin-bottom:38px">On Record · Family continuity</div>
+      <h1 class="lede" id="openLede"></h1>
+      <div class="frag">
+        <div><i>01</i><p>A missing document</p></div>
+        <div><i>02</i><p>An unclear nominee</p></div>
+        <div><i>03</i><p>Two people, two memories of the same property</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 02 EVIDENCE ============ -->
+  <section class="scene" id="s_ev"></section>
+
+  <!-- ============ 03 PRODUCT ============ -->
+  <section class="scene" id="s_prod">
+    <div class="frame">
+      <div class="bar"><i></i><i></i><i></i><div class="url" id="urlPill">on-record</div></div>
+      <div class="win" id="win"></div>
+      <div class="stamp" id="stamp"><b>Private</b></div>
+    </div>
+    <div class="calls">
+      <h3 id="callHead">Living Mode</h3>
+      <div id="callList"></div>
+    </div>
+  </section>
+
+  <!-- ============ 04 CONSENT FORK ============ -->
+  <section class="scene" id="s_fork">
+    <div id="forkTitle"><h2>The <em>Consent Fork</em></h2></div>
+    <div id="oldWay">
+      <div class="lbl">Most systems</div>
+      <div class="line">
+        <p>Sharing is one irreversible decision.</p>
+        <div id="oldStrike"></div>
+      </div>
+    </div>
+    <svg id="forkSvg" width="900" height="440" fill="none">
+      <path id="p_trunk" d="M0 220 H300" stroke="#9c9bea" stroke-width="2"/>
+      <path id="p_up"   d="M300 220 C410 220 410 84 540 84 H760" stroke="#9c9bea" stroke-width="2"/>
+      <path id="p_dn"   d="M300 220 C410 220 410 356 540 356 H760" stroke="#9c9bea" stroke-width="2"/>
+      <circle id="c_node" cx="300" cy="220" r="7" fill="#0b0b09" stroke="#9c9bea" stroke-width="2" opacity="0"/>
+    </svg>
+    <div class="branch" id="b0" style="left:150px;top:696px;width:400px">
+      <div class="n">01 / Now, and always</div>
+      <h4>Private living record</h4>
+      <p>The owner's own copy. Nothing leaves it because someone was invited.</p>
+    </div>
+    <div class="branch" id="b1" style="left:1000px;top:400px;width:470px">
+      <div class="n">02 / Visible now</div>
+      <h4>What each person can see</h4>
+      <p>Chosen per person, per record — and changeable.</p>
+      <div class="tiers"><span>Private</span><span class="on">Existence-only</span><span>Full detail</span></div>
+    </div>
+    <div class="branch" id="b2" style="left:1000px;top:706px;width:470px">
+      <div class="n">03 / Handed over later</div>
+      <h4>The handover file</h4>
+      <p>A separate read-only projection, prepared in advance. Not the account.</p>
+    </div>
+  </section>
+
+  <!-- ============ 05 NOMINEE ============ -->
+  <section class="scene" id="s_nom">
+    <div class="kicker" style="position:absolute;left:150px;top:176px">Asset-level fact · not a legal conclusion</div>
+    <div class="split">
+      <div class="panel" id="nomL">
+        <div class="n">In the record</div>
+        <h4>Nominee status</h4>
+        <p>Recorded per asset, because the nominee process is institution-specific.</p>
+        <div class="shot" style="margin-top:34px;height:352px;overflow:hidden">
+          <img src="build/screens/03-records.png" alt=""/>
+        </div>
+      </div>
+      <div class="panel" id="nomR">
+        <div class="n">What the record means</div>
+        <h4>Nominee is not owner</h4>
+        <div class="chain" id="nomChain"></div>
+        <div class="verdict" id="nomVerdict">
+          <b>Records the nomination. Never the ownership.</b>
+          <p>Source: Reserve Bank of India, deceased-depositor guidance — which also sets 15 days
+             to settle an eligible claim once proof of death and identification are given.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 06 COOLING OFF + CONSENT LOG ============ -->
+  <section class="scene" id="s_cool">
+    <div class="kicker" style="position:absolute;left:150px;top:176px">A downgrade is a decision, not a reflex</div>
+    <h2 style="position:absolute;left:150px;top:214px;font:600 72px/1 var(--cond);text-transform:uppercase">
+      Seven-day cooling-off</h2>
+    <div class="shot" id="coolShot" style="position:absolute;left:150px;top:340px;width:1000px;opacity:0">
+      <img src="build/screens/06b-cooling-row.png" alt=""/>
+    </div>
+    <div id="ring">
+      <svg width="300" height="300" style="transform:rotate(-90deg)">
+        <circle cx="150" cy="150" r="132" stroke="rgba(248,247,242,.12)" stroke-width="3" fill="none"/>
+        <circle id="ringArc" cx="150" cy="150" r="132" stroke="#c87b63" stroke-width="3" fill="none"
+                stroke-linecap="round"/>
+      </svg>
+      <div class="lbl"><b id="ringDays">0</b><small>Days pending</small></div>
+    </div>
+    <div style="position:absolute;left:150px;top:582px;width:1000px" id="coolNotes"></div>
+    <div style="position:absolute;right:150px;top:614px;width:392px">
+      <div class="kicker" id="logKick" style="opacity:0;margin-bottom:20px">Consent Log</div>
+      <div id="logList"></div>
+    </div>
+  </section>
+
+  <!-- ============ 07 SEPARATION ============ -->
+  <section class="scene" id="s_sep">
+    <div class="kicker" style="position:absolute;left:0;right:0;top:172px;text-align:center">
+      Two different objects</div>
+    <div style="position:absolute;left:150px;right:150px;top:238px;display:grid;
+                grid-template-columns:1fr 1fr;gap:180px">
+      <div class="sepCol" id="sepA">
+        <div class="shot" style="height:430px;overflow:hidden">
+          <img src="build/screens/03b-records-page.png" alt=""/>
+        </div>
+        <div class="cap a">Owner account — never released
+          <em>Every record, full detail, edit rights, the whole history.</em></div>
+      </div>
+      <div class="sepCol" id="sepB">
+        <div class="shot" style="height:430px;overflow:hidden">
+          <img src="build/screens/05-ananya-view.png" alt=""/>
+        </div>
+        <div class="cap b">Handover file — read-only
+          <em>Only the selected facts. No edit access. A separate address.</em></div>
+      </div>
+    </div>
+    <div id="sepWall"><b>No path across</b></div>
+  </section>
+
+  <!-- ============ 08 CLOSE ============ -->
+  <section class="scene" id="s_close">
+    <div class="kicker" id="closeKick">What On Record does not do</div>
+    <div class="nots">
+      <div class="not" id="n0"><small>Does not</small>
+        <div class="ph"><b>Make a will</b><div class="x"></div></div></div>
+      <div class="not" id="n1"><small>Does not</small>
+        <div class="ph"><b>Decide ownership</b><div class="x"></div></div></div>
+      <div class="not" id="n2"><small>Does not</small>
+        <div class="ph"><b>Replace a court, bank or authority</b><div class="x"></div></div></div>
+    </div>
+    <h2 id="closeLine">Fewer missing facts. Fewer conflicting memories. Clearer consent.</h2>
+    <h2 id="closeGoal">Prevent a family record<br/>from becoming a <em>family dispute</em>.</h2>
+    <div id="closeMark">On Record · Build What Moves India · Phase 2</div>
+  </section>
+
+  <div id="vig"></div>
+  <svg id="grain" xmlns="http://www.w3.org/2000/svg">
+    <filter id="gf"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" seed="7"/></filter>
+    <rect width="100%" height="100%" filter="url(#gf)"/>
+  </svg>
+
+  <div id="chrome">
+    <div id="wordmark"><span class="mk">OR</span><span><b>On Record</b><small>Family continuity</small></span></div>
+    <div id="act"><span id="actNum">01</span> / <b id="actName">The problem</b></div>
+    <div id="footL">Synthetic case FC-001 · no login · no live data · no government system contacted</div>
+    <div id="footR">AI-generated narration</div>
+    <div id="barTrack"></div><div id="bar"></div>
+  </div>
+
+  <div id="sub"><span id="subText"></span></div>
+</div>
+
+<script>
+// ─────────────────────────────────────────────────────────────────────────────
+// Deterministic renderer. Nothing animates on its own: seek(t) writes every
+// style from scratch, so frame N is identical however it was reached. That is
+// what lets Playwright screenshot 2,880 frames with no drift and no flicker.
+// ─────────────────────────────────────────────────────────────────────────────
+const T = window.__TIMINGS__;          // injected by 3_render.mjs
+const seg = {}; T.segments.forEach(s => seg[s.scene] = s);
+const S = (name) => seg[name];
+const TOTAL = T.total;
+
+const clamp  = (v,a,b) => v<a?a:v>b?b:v;
+const norm   = (t,a,b) => clamp((t-a)/(b-a),0,1);
+const eOut   = p => 1-Math.pow(1-p,3);
+const eInOut = p => p<.5 ? 4*p*p*p : 1-Math.pow(-2*p+2,3)/2;
+const px = n => n.toFixed(2)+'px';
+
+/** Small DOM builder — keeps every node construction out of innerHTML. */
+function node(tag, cls, text){
+  const el = document.createElement(tag);
+  if (cls) el.className = cls;
+  if (text !== undefined) el.textContent = text;
+  return el;
+}
+/** Standard entrance: fade + rise, driven purely by t. */
+function reveal(el, t, at, dur=0.62, rise=26){
+  const p = eOut(norm(t, at, at+dur));
+  el.style.opacity = p;
+  el.style.transform = `translateY(${px((1-p)*rise)})`;
+}
+/** Scene crossfade envelope. */
+function envelope(t, a, b, fin=0.45, fout=0.40){
+  if (t < a-fin || t > b+fout) return 0;
+  return Math.min(eInOut(norm(t, a-fin, a+0.06)), eInOut(1-norm(t, b-0.06, b+fout)));
+}
+
+// ── evidence act: each number keeps the qualifier that makes it honest ───────
+const FACTS = [
+  { scene:'fact-84', num:'84%', cls:'',
+    cap:'of Indian household wealth is held in real estate and other physical assets.',
+    pos:'Why a property record carries so much of a family’s life.',
+    neg:'It does not mean 84% of property is disputed.',
+    src:'RBI household-finance research', url:'dvararesearch.com' },
+  { scene:'fact-66', num:'66%', cls:'',
+    cap:'of civil cases in the cited research are land and property matters.',
+    pos:'Property disagreement dominates that civil caseload.',
+    neg:'It is not a census of every civil case in India.',
+    src:'CPR', url:'cprindia.org' },
+  { scene:'fact-20', num:'≈ 20 years', cls:'sm',
+    cap:'average time for a land-acquisition dispute to reach Supreme Court resolution.',
+    pos:'How long an unresolved land question can run.',
+    neg:'Not the average for every family property case.',
+    src:'NITI Aayog', url:'niti.gov.in' },
+  { scene:'fact-njdg', num:'5,18,49,083', cls:'sm',
+    cap:'pending district and taluka cases — including 1,12,94,941 civil.',
+    pos:'The queue a matter joins once it is filed.',
+    neg:'A live dashboard figure that changes continuously.',
+    src:'NJDG', url:'njdg.ecourts.gov.in' },
+];
+const evWrap = document.getElementById('s_ev');
+FACTS.forEach((f,i) => {
+  const card = node('div','fact'); card.id = 'fact'+i;
+  const left = node('div','left');
+  left.appendChild(node('div','num '+f.cls, f.num));
+  left.appendChild(node('div','cap', f.cap));
+  const right = node('div','right');
+  [['pos','What this shows',f.pos],['neg','What it does not show',f.neg]].forEach(([k,lbl,body])=>{
+    const q = node('div','qual '+k);
+    q.appendChild(node('i',null,lbl));
+    q.appendChild(node('p',null,body));
+    right.appendChild(q);
+  });
+  const src = node('div','src');
+  src.appendChild(node('b',null,'Source'));
+  src.appendChild(document.createTextNode(' · ' + f.src + ' · ' + f.url));
+  right.appendChild(src);
+  card.appendChild(left); card.appendChild(right);
+  evWrap.appendChild(card);
+});
+
+// ── product act: real captures, each with its own callouts ──────────────────
+const SHOTS = [
+  { scene:'product-open', pan:100,     img:'01-hero.png',        url:'on-record · /',                          head:'Before the dispute', calls:[
+      ['Owner','Mihir Sharma is alive and holds the record himself.'],
+      ['Living Mode','Meant to be revised, not sealed.']] },
+  { scene:'product-records', pan:0,  img:'03-records.png',     url:'on-record · /records',                   head:'What exists', calls:[
+      ['Seven records','Home, financial assets, documents and wishes.'],
+      ['Per asset','Nominee status sits on the record, not on the person.']] },
+  { scene:'product-private', pan:0,  img:'03-records.png',     url:'on-record · /records',                   head:'Everything starts private', calls:[
+      ['Default','No family member sees anything yet.']] },
+  { scene:'product-consent', pan:210,  img:'04-consent.png',     url:'on-record · /family',                    head:'What Ananya can see', calls:[
+      ['Existence-only','She learns the family home is recorded — not its details.'],
+      ['Per record','Each row is decided on its own.']] },
+  { scene:'product-ananya', pan:180,   img:'05-ananya-view.png', url:'on-record · /preview/demo-ananya-7f2',   head:'Ananya’s own view', calls:[
+      ['Not the owner account','A separate read-only address.'],
+      ['Two records','Exactly what Mihir approved. Nothing more.']] },
+  { scene:'product-handover', pan:0, img:'08-handover.png',    url:'on-record · /handover',                  head:'The handover file', calls:[
+      ['Selected facts','Mihir picks what may be needed later.'],
+      ['Simulated','A read-only preview. Nothing is released.']] },
+];
+const win = document.getElementById('win');
+const callList = document.getElementById('callList');
+SHOTS.forEach((s,i) => {
+  const im = new Image(); im.src = 'build/screens/' + s.img; im.id = 'shot'+i; im.alt = '';
+  win.appendChild(im);
+});
+const CALL_MAX = 2;
+for (let i=0;i<CALL_MAX;i++){
+  const d = node('div','call'); d.id = 'call'+i;
+  d.appendChild(node('b')); d.appendChild(node('p'));
+  callList.appendChild(d);
+}
+
+// ── nominee chain ───────────────────────────────────────────────────────────
+const CHAIN = [
+  ['RBI',  'A nominee may receive funds as trustee for the legal heirs.'],
+  ['Then', 'Entitlement still depends on a valid instrument and succession law.'],
+  ['So',   'On Record stores the nomination, and points to the institution that decides.'],
+];
+const nomChain = document.getElementById('nomChain');
+CHAIN.forEach((c,i)=>{
+  const d = node('div'); d.id = 'chain'+i;
+  d.appendChild(node('i',null,c[0]));
+  d.appendChild(node('p',null,c[1]));
+  nomChain.appendChild(d);
+});
+
+// ── cooling-off notes and consent log ───────────────────────────────────────
+const COOL_NOTES = [
+  ['Reversible','The owner can cancel the pending change at any point inside the window.'],
+  ['Voice without edit rights','The affected person can raise a concern. They still cannot edit the record.'],
+];
+const coolNotes = document.getElementById('coolNotes');
+COOL_NOTES.forEach((n,i)=>{
+  const d = node('div','call'); d.id = 'cn'+i;
+  d.appendChild(node('b',null,n[0]));
+  d.appendChild(node('p',null,n[1]));
+  coolNotes.appendChild(d);
+});
+const LOG = [
+  ['09:19','Shared existence-only access','Family home → Ananya Sharma'],
+  ['09:23','Shared full detail','Life cover policy → Arjun Sharma'],
+  ['09:31','Requested a visibility downgrade','Full detail → Existence-only · cooling-off started'],
+  ['09:33','Raised a concern','Ananya Sharma · private note to owner'],
+];
+const logList = document.getElementById('logList');
+LOG.forEach((l,i)=>{
+  const d = node('div','logrow'); d.id = 'log'+i;
+  d.appendChild(node('i',null,l[0]));
+  const p = node('p',null,l[1]);
+  p.appendChild(node('small',null,l[2]));
+  d.appendChild(p);
+  logList.appendChild(d);
+});
+
+// ── cold-open headline, word by word ────────────────────────────────────────
+const lede = document.getElementById('openLede');
+'A family dispute rarely starts in court.'.split(' ').forEach((w,i)=>{
+  const s = node('span','w', w);
+  s.style.display = 'inline-block';
+  lede.appendChild(s);
+  lede.appendChild(document.createTextNode(' '));
+});
+const openWords = [...document.querySelectorAll('#openLede .w')];
+const openFrags = [...document.querySelectorAll('#s_open .frag div')];
+
+// ── path lengths for the fork draw-on ───────────────────────────────────────
+['p_trunk','p_up','p_dn'].forEach(id=>{
+  const p = document.getElementById(id); const L = p.getTotalLength();
+  p.dataset.len = L; p.style.strokeDasharray = L;
+});
+const ringArc = document.getElementById('ringArc');
+const RING_LEN = 2*Math.PI*132;
+ringArc.style.strokeDasharray = RING_LEN;
+
+// ── act labels ──────────────────────────────────────────────────────────────
+const ACTS = [
+  [0,                            S('product-open').start-0.4, '01','The problem'],
+  [S('product-open').start-0.4,  S('fork-title').start-0.4,   '02','On Record in use'],
+  [S('fork-title').start-0.4,    S('boundary').start-0.4,     '03','The Consent Fork'],
+  [S('boundary').start-0.4,      TOTAL+1,                     '04','The boundary'],
+];
+
+const scenes = {
+  open:  document.getElementById('s_open'),
+  ev:    document.getElementById('s_ev'),
+  prod:  document.getElementById('s_prod'),
+  fork:  document.getElementById('s_fork'),
+  nom:   document.getElementById('s_nom'),
+  cool:  document.getElementById('s_cool'),
+  sep:   document.getElementById('s_sep'),
+  close: document.getElementById('s_close'),
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+function seek(t){
+  // ---- persistent chrome --------------------------------------------------
+  document.getElementById('bar').style.width = px(1920 * clamp(t/TOTAL,0,1));
+  const act = ACTS.find(a => t >= a[0] && t < a[1]) || ACTS[ACTS.length-1];
+  document.getElementById('actNum').textContent = act[2];
+  document.getElementById('actName').textContent = act[3];
+
+  // ---- subtitles ----------------------------------------------------------
+  const live = T.segments.find(s => t >= s.start-0.12 && t <= s.end+0.30);
+  const sub = document.getElementById('sub');
+  if (live){
+    document.getElementById('subText').textContent = live.caption;
+    sub.style.opacity = Math.min(eOut(norm(t, live.start-0.12, live.start+0.14)),
+                                 1-eOut(norm(t, live.end+0.06, live.end+0.30)));
+  } else sub.style.opacity = 0;
+
+  // ---- 01 cold open -------------------------------------------------------
+  const o = S('cold-open');
+  scenes.open.style.opacity = envelope(t, 0, o.end-0.10, 0.30, 0.40);
+  document.getElementById('openKick').style.opacity = eOut(norm(t, 0.15, 0.9));
+  openWords.forEach((w,i)=>{
+    const at = 0.55 + i*0.085;
+    const p = eOut(norm(t, at, at+0.5));
+    w.style.opacity = p;
+    w.style.transform = `translateY(${px((1-p)*30)})`;
+  });
+  openFrags.forEach((f,i)=> reveal(f, t, 2.9 + i*0.55, 0.7, 20));
+
+  // ---- 02 evidence --------------------------------------------------------
+  const evA = S('fact-84').start, evB = S('fact-njdg').end;
+  scenes.ev.style.opacity = envelope(t, evA, evB);
+  FACTS.forEach((f,i)=>{
+    const s = S(f.scene);
+    const next = FACTS[i+1] ? S(FACTS[i+1].scene).start : evB + 0.4;
+    const card = document.getElementById('fact'+i);
+    const on = envelope(t, s.start-0.30, next-0.34, 0.34, 0.30);
+    card.style.opacity = on;
+    if (on > 0){
+      const p = eOut(norm(t, s.start-0.30, s.start+0.7));
+      card.querySelector('.num').style.transform = `translateY(${px((1-p)*40)})`;
+      card.querySelector('.cap').style.opacity   = eOut(norm(t, s.start+0.10, s.start+0.85));
+      card.querySelector('.qual.pos').style.opacity = eOut(norm(t, s.start+0.45, s.start+1.15));
+      card.querySelector('.qual.neg').style.opacity = eOut(norm(t, s.start+0.85, s.start+1.55));
+      card.querySelector('.src').style.opacity      = eOut(norm(t, s.start+1.20, s.start+1.90));
+    }
+  });
+
+  // ---- 03 product ---------------------------------------------------------
+  const pA = S('product-open').start, pB = S('product-handover').end;
+  scenes.prod.style.opacity = envelope(t, pA, pB);
+  let active = -1;
+  SHOTS.forEach((sh,i)=>{
+    const s = S(sh.scene);
+    const next = SHOTS[i+1] ? S(SHOTS[i+1].scene).start : pB + 0.4;
+    const img = document.getElementById('shot'+i);
+    const on = (t >= s.start-0.28 && t < next-0.10) ? eInOut(norm(t, s.start-0.28, s.start+0.22)) : 0;
+    img.style.opacity = on;
+    // a slow push-in keeps a still capture feeling alive without faking interaction
+    const k = norm(t, s.start-0.28, next);
+    img.style.transformOrigin = 'top center';
+    img.style.transform = `translateY(${px(-(sh.pan||0)*eInOut(k))}) scale(${(1.004 + k*0.020).toFixed(4)})`;
+    if (on > 0) active = i;
+  });
+  if (active >= 0){
+    const sh = SHOTS[active], s = S(sh.scene);
+    document.getElementById('urlPill').textContent = sh.url;
+    document.getElementById('callHead').textContent = sh.head;
+    for (let i=0;i<CALL_MAX;i++){
+      const el = document.getElementById('call'+i), c = sh.calls[i];
+      if (!c){ el.style.opacity = 0; continue; }
+      el.querySelector('b').textContent = c[0];
+      el.querySelector('p').textContent = c[1];
+      reveal(el, t, s.start + 0.25 + i*0.55, 0.6, 18);
+    }
+  }
+  const pv = S('product-private');
+  document.getElementById('stamp').style.opacity =
+    Math.min(eOut(norm(t, pv.start-0.18, pv.start+0.34)), 1-eOut(norm(t, pv.end-0.20, pv.end+0.28)));
+
+  // ---- 04 consent fork ----------------------------------------------------
+  const fA = S('fork-title').start, fB = S('fork-branch-3').end;
+  scenes.fork.style.opacity = envelope(t, fA, fB);
+  reveal(document.getElementById('forkTitle'), t, fA-0.25, 0.7, 26);
+  const pr = S('fork-premise');
+  reveal(document.getElementById('oldWay'), t, pr.start-0.10, 0.6, 18);
+  document.getElementById('oldStrike').style.transform =
+    `scaleX(${eInOut(norm(t, pr.start+1.9, pr.start+2.9)).toFixed(4)})`;
+
+  const draw = (id,a,b) => {
+    const p = document.getElementById(id), L = +p.dataset.len;
+    p.style.strokeDashoffset = (L * (1 - eInOut(norm(t,a,b)))).toFixed(2);
+  };
+  const b0 = S('fork-branch-1'), b1 = S('fork-branch-2'), b2 = S('fork-branch-3');
+  draw('p_trunk', b0.start-0.30, b0.start+0.70);
+  draw('p_up',    b1.start-0.25, b1.start+0.90);
+  draw('p_dn',    b2.start-0.25, b2.start+0.90);
+  document.getElementById('c_node').style.opacity = eOut(norm(t, b0.start+0.35, b0.start+0.80));
+  reveal(document.getElementById('b0'), t, b0.start-0.15, 0.6, 20);
+  reveal(document.getElementById('b1'), t, b1.start-0.10, 0.6, 20);
+  reveal(document.getElementById('b2'), t, b2.start-0.10, 0.6, 20);
+
+  // ---- 05 nominee ---------------------------------------------------------
+  const nm = S('nominee');
+  scenes.nom.style.opacity = envelope(t, nm.start, nm.end);
+  reveal(document.getElementById('nomL'), t, nm.start-0.20, 0.7, 24);
+  reveal(document.getElementById('nomR'), t, nm.start+0.35, 0.7, 24);
+  CHAIN.forEach((_,i)=> reveal(document.getElementById('chain'+i), t, nm.start + 2.3 + i*1.6, 0.6, 16));
+  reveal(document.getElementById('nomVerdict'), t, nm.start + 8.0, 0.7, 18);
+
+  // ---- 06 cooling-off -----------------------------------------------------
+  const co = S('cooling-off');
+  scenes.cool.style.opacity = envelope(t, co.start, co.end);
+  reveal(document.getElementById('coolShot'), t, co.start-0.15, 0.7, 22);
+  reveal(document.getElementById('ring'), t, co.start + 1.8, 0.6, 14);
+  const rp = eInOut(norm(t, co.start + 2.1, co.start + 5.2));
+  ringArc.style.strokeDashoffset = (RING_LEN * (1 - rp)).toFixed(2);
+  document.getElementById('ringDays').textContent = Math.round(rp * 7);
+  COOL_NOTES.forEach((_,i)=> reveal(document.getElementById('cn'+i), t, co.start + 4.6 + i*1.1, 0.6, 16));
+  document.getElementById('logKick').style.opacity = eOut(norm(t, co.start + 6.0, co.start + 6.5));
+  LOG.forEach((_,i)=> reveal(document.getElementById('log'+i), t, co.start + 6.3 + i*0.40, 0.55, 14));
+
+  // ---- 07 separation ------------------------------------------------------
+  const sp = S('separation');
+  scenes.sep.style.opacity = envelope(t, sp.start, sp.end);
+  reveal(document.getElementById('sepA'), t, sp.start-0.20, 0.7, 24);
+  reveal(document.getElementById('sepB'), t, sp.start+0.30, 0.7, 24);
+  document.getElementById('sepWall').style.transform =
+    `translateX(-50%) scaleY(${eInOut(norm(t, sp.start+0.9, sp.start+2.0)).toFixed(4)})`;
+
+  // ---- 08 close -----------------------------------------------------------
+  const bd = S('boundary'), ch = S('close-helps'), cg = S('close-goal');
+  scenes.close.style.opacity = envelope(t, bd.start, TOTAL, 0.45, 0.01);
+  const notsOut = 1 - eOut(norm(t, cg.start-0.85, cg.start-0.30));
+  document.getElementById('closeKick').style.opacity =
+    Math.min(eOut(norm(t, bd.start-0.10, bd.start+0.45)), notsOut);
+  ['n0','n1','n2'].forEach((id,i)=>{
+    const el = document.getElementById(id);
+    reveal(el, t, bd.start + 0.15 + i*0.80, 0.6, 18);
+    el.style.opacity = Math.min(+el.style.opacity, notsOut);
+    el.querySelector('.x').style.transform =
+      `scaleX(${eInOut(norm(t, bd.start + 0.70 + i*0.80, bd.start + 1.40 + i*0.80)).toFixed(4)})`;
+  });
+  const cl = document.getElementById('closeLine');
+  const clIn = eOut(norm(t, ch.start-0.20, ch.start+0.55));
+  cl.style.opacity   = Math.min(clIn, 1-eOut(norm(t, cg.start-0.80, cg.start-0.30)));
+  cl.style.transform = `translateY(${px((1-clIn)*24)})`;
+  reveal(document.getElementById('closeGoal'), t, cg.start-0.25, 0.75, 30);
+  document.getElementById('closeMark').style.opacity = eOut(norm(t, cg.end-0.7, cg.end+0.6));
+}
+
+window.__seek = seek;
+window.__ready = (async () => {
+  await document.fonts.ready;
+  await Promise.all([...document.images].map(i => i.complete ? Promise.resolve() : i.decode().catch(()=>{})));
+  seek(0);
+  return true;
+})();
+
+// Optional real-time preview for eyeballing in a normal browser: film.html#play
+if (location.hash === '#play'){
+  const t0 = performance.now();
+  const tick = () => {
+    const t = (performance.now()-t0)/1000;
+    seek(Math.min(t, TOTAL));
+    if (t < TOTAL) requestAnimationFrame(tick);
+  };
+  window.__ready.then(()=>requestAnimationFrame(tick));
+}
+</script>
+</body>
+</html>

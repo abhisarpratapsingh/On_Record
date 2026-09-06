@@ -1,0 +1,142 @@
+{
+  "voice": "en-IN-PrabhatNeural",
+  "rate": "+57%",
+  "pitch": "-2Hz",
+  "gapMs": 110,
+  "segments": [
+    {
+      "id": "s01",
+      "scene": "cold-open",
+      "text": "A family dispute rarely starts in court. It starts with a missing document, an unclear nominee, or two people remembering the same property differently."
+    },
+    {
+      "id": "s02",
+      "scene": "fact-84",
+      "text": "R B I research finds about 84 percent of Indian household wealth sits in property and other physical assets."
+    },
+    {
+      "id": "s03",
+      "scene": "fact-66",
+      "text": "C P R reports land and property make up roughly 66 percent of civil cases in the cited research."
+    },
+    {
+      "id": "s04",
+      "scene": "fact-20",
+      "text": "NITI Aayog cites almost 20 years for a land-acquisition dispute to reach resolution."
+    },
+    {
+      "id": "s05",
+      "scene": "fact-njdg",
+      "text": "N J D G currently shows over 5.18 crore pending district and taluka cases. 1.13 crore of them civil."
+    },
+    {
+      "id": "s06",
+      "scene": "product-open",
+      "text": "On Record starts before the dispute, while Mihir Sharma is alive."
+    },
+    {
+      "id": "s07",
+      "scene": "product-records",
+      "text": "He records what exists: the home, financial assets, documents, nominee status, and his wishes."
+    },
+    {
+      "id": "s08",
+      "scene": "product-private",
+      "text": "Everything starts private."
+    },
+    {
+      "id": "s09",
+      "scene": "product-consent",
+      "text": "He then chooses what his spouse Ananya can see. Existence-only, so she knows a record exists without seeing sensitive details."
+    },
+    {
+      "id": "s10",
+      "scene": "product-ananya",
+      "text": "This is Ananya's view. Not Mihir's account. A separate, read-only perspective showing only what he approved."
+    },
+    {
+      "id": "s11",
+      "scene": "product-handover",
+      "text": "The same case then moves into a handover. Mihir selects the facts needed later and prepares a simulated read-only file."
+    },
+    {
+      "id": "s12",
+      "scene": "fork-title",
+      "text": "The feature I rebuilt is the Consent Fork."
+    },
+    {
+      "id": "s13",
+      "scene": "fork-premise",
+      "text": "Most systems treat sharing as one irreversible decision. On Record separates three moments."
+    },
+    {
+      "id": "s14",
+      "scene": "fork-branch-1",
+      "text": "The owner's private living record."
+    },
+    {
+      "id": "s15",
+      "scene": "fork-branch-2",
+      "text": "What each person can see now."
+    },
+    {
+      "id": "s16",
+      "scene": "fork-branch-3",
+      "text": "And what may be handed over later."
+    },
+    {
+      "id": "s17",
+      "scene": "nominee",
+      "text": "Every record carries nominee status, because the process is institution-specific. R B I explains a nominee may receive funds as trustee for the legal heirs. So On Record records the nomination, never the ownership."
+    },
+    {
+      "id": "s18",
+      "scene": "cooling-off",
+      "text": "A visibility downgrade is not instant. It enters a simulated seven-day cooling-off period. Concerns can be raised without edit access. Every material change writes a Consent Log entry."
+    },
+    {
+      "id": "s19",
+      "scene": "separation",
+      "text": "The recipient receives a separate handover file. Never the owner's account."
+    },
+    {
+      "id": "s20",
+      "scene": "boundary",
+      "text": "On Record does not make a will, decide ownership, or replace a court, bank, or authority."
+    },
+    {
+      "id": "s21",
+      "scene": "close-helps",
+      "text": "It helps families reach those processes with fewer missing facts, fewer conflicting memories, and clearer consent."
+    },
+    {
+      "id": "s22",
+      "scene": "close-goal",
+      "text": "The goal is simple. Prevent a family record from becoming a family dispute."
+    }
+  ],
+  "captions": {
+    "s01": "A family dispute rarely starts in court. It starts with a missing document, an unclear nominee, or two people remembering the same property differently.",
+    "s02": "RBI research finds about 84% of Indian household wealth sits in property and other physical assets.",
+    "s03": "CPR reports land and property make up roughly 66% of civil cases in the cited research.",
+    "s04": "NITI Aayog cites almost 20 years for a land-acquisition dispute to reach resolution.",
+    "s05": "NJDG currently shows over 5.18 crore pending district and taluka cases. 1.13 crore of them civil.",
+    "s06": "On Record starts before the dispute, while Mihir Sharma is alive.",
+    "s07": "He records what exists: the home, financial assets, documents, nominee status, and his wishes.",
+    "s08": "Everything starts private.",
+    "s09": "He then chooses what his spouse Ananya can see. Existence-only, so she knows a record exists without seeing sensitive details.",
+    "s10": "This is Ananya's view. Not Mihir's account. A separate, read-only perspective showing only what he approved.",
+    "s11": "The same case then moves into a handover. Mihir selects the facts needed later and prepares a simulated read-only file.",
+    "s12": "The feature I rebuilt is the Consent Fork.",
+    "s13": "Most systems treat sharing as one irreversible decision. On Record separates three moments.",
+    "s14": "The owner's private living record.",
+    "s15": "What each person can see now.",
+    "s16": "And what may be handed over later.",
+    "s17": "Every record carries nominee status, because the process is institution-specific. RBI explains a nominee may receive funds as trustee for the legal heirs. So On Record records the nomination, never the ownership.",
+    "s18": "A visibility downgrade is not instant. It enters a simulated seven-day cooling-off period. Concerns can be raised without edit access. Every material change writes a Consent Log entry.",
+    "s19": "The recipient receives a separate handover file. Never the owner's account.",
+    "s20": "On Record does not make a will, decide ownership, or replace a court, bank, or authority.",
+    "s21": "It helps families reach those processes with fewer missing facts, fewer conflicting memories, and clearer consent.",
+    "s22": "The goal is simple. Prevent a family record from becoming a family dispute."
+  }
+}
