@@ -15,9 +15,8 @@ Deploy the generated `dist/` directory. Vite uses relative asset paths, so the
 build works on a project subpath such as GitHub Pages. Hash routes keep direct
 navigation simple (`#/demo`, `#/records`, `#/family`, `#/handover`).
 
-The other repo files (`CLAUDE.md`, `ON-RECORD-BUILD-PROMPT.md`, `docs/`,
-`codex/`, `.claude/`, `.jez/`) are project documentation and dev tooling.
-They are harmless to include but not required by the live page.
+The `docs/` and `codex/` folders contain submission notes and the required
+build evidence. They are not required by the live page.
 
 ## Vercel (dashboard, no CLI)
 
