@@ -58,6 +58,10 @@ The product does not make a will, decide ownership, or promise that a nominee is
 
 ## What is real and what is mocked
 
-Real: the frontend journey, bilingual core UI, private-first visibility state machine, recipient perspectives, audit events, cooling-off interaction, handover preview, resettable simulation, and source links.
+Real: the frontend journey, bilingual core UI, private-first visibility state machine, recipient perspectives, audit events, an enforced seven-day cooling-off with an explicit simulated clock, tier-based field disclosure with SHA-256 fingerprints, institution next-step links on the handover file, handover preview, resettable simulation, and source links.
+
+Concerns are attributable: they can only be raised from a member's own read-only view, about a record they can currently see, and only with words that member wrote. The owner cannot create one on their behalf.
+
+Field disclosure is a UI control, not secrecy. Account references, document locations and nominee names are released only to the owner or to a person granted full detail; everyone else sees a mask plus a one-way fingerprint that confirms two people mean the same record without revealing it. Because the prototype has no backend or authentication, the synthetic seed data still ships in the bundle. Real confidentiality requires server-side storage, encryption, and an authenticated session.
 
 Mocked: identity, authentication, invitation delivery, death trigger, institution APIs, document verification, legal entitlement, and any external release. The shipped build is deliberately safe for a public demo and keeps the future integration point explicit.
